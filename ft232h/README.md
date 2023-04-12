@@ -17,3 +17,7 @@ export BLINKA_FT232H=1
 ```
 
 3. Wire circuit with bus lines and pullup resistors
+
+4. Install library
+
+```pip3 install pyftdi``
