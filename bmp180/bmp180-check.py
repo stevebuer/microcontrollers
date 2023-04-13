@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # 
-# Check BMP180 device is connected
+# Check BMP180 device is connected using pyftdi
 # Steve Buer, N7MKO
 # 
 
@@ -9,8 +9,6 @@ import sys
 import pyftdi 
 
 from pyftdi.i2c import I2cController
-
-# Check communication with BMP180 i2c chip
 
 FTDI_DEVICE='ftdi://ftdi:232h/1'
 BMP180_I2CADDR=0x77
