@@ -10,8 +10,8 @@ Pinout
 
 * red: 5V, 500mA
 * black: GND
-* white: RXD 
-* green: TXD 
+* white: RX into USB port
+* green: TX from USB port
 
 [Adafruit 954 Datasheet](https://www.farnell.com/datasheets/1651403.pdf)
 
