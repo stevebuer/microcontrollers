@@ -1,8 +1,7 @@
 # PIC K150 Programmer
 
-Purchased many years ago. This was sold by a number of different companies apparently, with
-many clones proliferating on ebay and other sites. Companies with links to information are
-Future Electronics, kitsrsus.
+This appears to have been sold by a number of different companies, wtih many clones proliferating on ebay, 
+but originally designed by kitsrus. A detailed manual is also available from Future Electronics.
 
 <img src="pic_k150.png">
 
@@ -26,11 +25,9 @@ PL2303 chips that are not supported in recent versions of the Windows prolific d
 
 The Windows programmer software is called DIYpack25.
 
-Linux support may be available through a program called picpro.py circa 2004.
+Linux support was originally developed circa 2004 and has been re-written and provided at:
 
-Linux detects my programmer as a PL2303.
-
-https://eliasandrade.wordpress.com/2015/01/20/como-usar-o-gravador-pic-k150-no-linux/
+https://github.com/Salamek/picpro
 
 ## Notes
 
