@@ -29,6 +29,10 @@ Linux support was originally developed circa 2004 and has been re-written and pr
 
 https://github.com/Salamek/picpro
 
+I was able to install this via debian apt.
+
+Todo: Test my programmer
+
 ## Notes
 
 There is a V1 and V2 of this board with minor differences.
