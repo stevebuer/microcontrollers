@@ -29,9 +29,23 @@ Linux support was originally developed circa 2004 and has been re-written and pr
 
 https://github.com/Salamek/picpro
 
-I was able to install this via debian apt.
+I was able to install this via debian apt: 
 
-Todo: Test my programmer
+<pre>
+
+wget -O- https://repository.salamek.cz/deb/salamek.gpg | sudo tee /usr/share/keyrings/salamek-archive-keyring.gpg
+
+echo "deb     [signed-by=/usr/share/keyrings/salamek-archive-keyring.gpg] https://repository.salamek.cz/deb/pub all main" | sudo tee /etc/apt/sources.list.d/salamek.cz.list
+
+sudo apt install python3-picpro
+
+</pre>
+
+Todo:
+
+* Install development tools
+* Verify my programmer has correct firmware for this software
+* Test program a chip
 
 ## Notes
 
