@@ -42,3 +42,21 @@ export BLINKA_FT232H=1
 ```
 
 5. Wire circuit with bus lines and pullup resistors
+
+There are two versions of this board with slightly different pinouts. Mine is the older version.
+
+A complete description is available at the <a href="https://learn.adafruit.com/circuitpython-on-any-computer-with-ft232h/pinouts">Adafruit FT232H page</a>.
+
+<img src="https://cdn-learn.adafruit.com/assets/assets/000/081/360/original/sensors_ft232h_pinouts.png?1569352726" width="400">
+
+For i2C mode pins D1 and D2 must be tied together.
+
+Output pins can sink or source a maximum of 16 mA.
+
+A <a href="https://cdn-learn.adafruit.com/downloads/pdf/adafruit-ft232h-breakout.pdf">PDF manual</a> is available.
+
+The chip has two modes: UART and MPSSE. It can only be in one mode at a time.
+
+The Blinka library uses the <a href="https://eblot.github.io/pyftdi/gpio.html">pyftdi library</a>.
+
+Todo: Using pyftdi directly, without blinka.
