@@ -60,3 +60,18 @@ The chip has two modes: UART and MPSSE. It can only be in one mode at a time.
 The Blinka library uses the <a href="https://eblot.github.io/pyftdi/gpio.html">pyftdi library</a>.
 
 Todo: Using pyftdi directly, without blinka.
+
+## i2c Pullups
+
+4.7k (Yellow-Violet-Red)
+
+SDA/SCL to 5v
+
+## GPIO Example
+
+470 Ohm (Yellow-Violet-Brown)
+1k Ohm (Brown-Black-Red)
+
+5v / 1k Ohm = 5 mA LED current
+
+5v / 470 Ohm = 10.6 mA LED current
