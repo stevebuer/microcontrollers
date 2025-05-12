@@ -1,0 +1,23 @@
+;
+; 8051 blinky.asm
+;
+; AS31 assembler
+;
+
+BEGIN:	MOV P1, #0
+BLINK:	SETB P1.2
+	ACALL DELAY
+	CLR P1.2
+	ACALL DELAY
+	SJMP BLINK
+;
+; (15 * 255 * 255) * 1.085 uS ~ 1 sec delay
+;
+
+DELAY:	MOV R7, #15
+HERE1:	MOV R6, #255
+HERE2:	MOV R5, #255
+HERE3:	DJNZ R5, HERE3
+ 	DJNZ R6, HERE2
+ 	DJNZ R7, HERE1
+	RET
