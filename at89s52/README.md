@@ -2,15 +2,25 @@
 
 This version of the Atmel AT89 series supports In-System Programming (ISP) to Flash memory.
 
-<a href="arpoison.net/bits/at89s52_ds.pdf">AT89S52 Datasheet</a>
+<a href="https://www.keil.com/dd/docs/datashts/atmel/at89s52_ds.pdf">AT89S52 Datasheet</a>
 
-My chip is in the 40 pin PDIP format.
+My chips are in the 40 pin PDIP format.
 
-# Programming
+## Development Boards
 
-This chip can apparently be programmed via AVRDude with some modifications. Need to research.
+I purchased this development board from ebay as a kit.
 
-There are other projects out there to maybe build a small programmer board with the parts I have 
-available. Might need another 40 pin ZIF socket?
+<img src="at89_devboard.png">
 
-https://www.hackster.io/PatelDarshil/programming-atmel-at89-series-via-arduino-cf6201
+I have another small one somewhere that also came as a kit.
+
+## Programming
+
+I was able to program the chips with the 'Willar programmer' obtained from ebay. The software is 
+Willar Programmer V2.2 and runs under Windows.
+
+<img src="willar_programmer.png">
+
+This chip can apparently also be programmed via AVRDude with some modifications. Need to research.
+
+The development board shown above has a plug for an ISP programming cable.
