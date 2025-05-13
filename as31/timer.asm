@@ -1,0 +1,13 @@
+;
+; 8051 blink with timer
+;
+; AS31 assembler
+;
+
+BEGIN:	MOV P1, #0
+	SETB P1.2
+TIMER:  MOV TMOD, #00000001B
+	SETB TR0
+WAIT:	JNB TR0, WAIT
+BLINK:	CPL P1.2
+	LJMP WAIT
