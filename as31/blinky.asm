@@ -4,7 +4,7 @@
 ; AS31 assembler
 ;
 
-BEGIN:	MOV P2, #1
+BEGIN:	MOV P2, #255
 BLINK:	CLR P2.0
 	ACALL DELAY
 	SETB P2.0
