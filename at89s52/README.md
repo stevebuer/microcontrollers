@@ -12,7 +12,7 @@ I purchased this development board from ebay as a kit.
 
 <img src="at89_devboard.png" width="300">
 
-<a href="development-board.md">Board Info</a>
+<a href="DEVBOARD.md">Board Info</a>
 
 I have another small one somewhere that also came as a kit.
 
