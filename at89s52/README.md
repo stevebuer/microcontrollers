@@ -10,7 +10,9 @@ My chips are in the 40 pin PDIP format.
 
 I purchased this development board from ebay as a kit.
 
-<img src="at89_devboard.png">
+<img src="at89_devboard.png" width="300">
+
+<a href="development-board.md">Board Info</a>
 
 I have another small one somewhere that also came as a kit.
 
