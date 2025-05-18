@@ -1,6 +1,6 @@
 # C51/AVR Devboard 
 
-<img src="at89_devboard.png" with="200">
+<img src="at89_devboard.png" width="200">
  
 * A102J 1k resistor pack
 * A103J 10k resistor pack
