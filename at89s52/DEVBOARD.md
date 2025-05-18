@@ -1,6 +1,6 @@
 # C51/AVR Devboard 
 
-<img src="at89_devboard.png" width="200">
+<img src="at89_devboard.png" width="300">
 
 * ISP header on Port 1 
 * A102J 1k resistor pack on Port 3

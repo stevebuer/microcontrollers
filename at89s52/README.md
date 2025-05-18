@@ -12,7 +12,7 @@ I purchased this development board from ebay as a kit.
 
 <img src="at89_devboard.png" width="300">
 
-<a href="DEVBOARD.md">Board Info</a>
+<a href="DEVBOARD.md">Dev Board Info</a>
 
 I have another small one somewhere that also came as a kit.
 
@@ -21,7 +21,7 @@ I have another small one somewhere that also came as a kit.
 I was able to program the chips with the 'Willar programmer' obtained from ebay. The software is 
 Willar Programmer V2.2 and runs under Windows.
 
-<img src="willar_programmer.png">
+<img src="willar_programmer.png" width="200">
 
 This chip can apparently also be programmed via AVRDude with some modifications. Need to research.
 
