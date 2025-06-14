@@ -1,14 +1,10 @@
 # PIC Microcontrollers
 
-These <a href="https://en.wikipedia.org/wiki/PIC_microcontrollers"> microcontrollers have been produced since the 1980's by Microchip Technology.</a>
+I have a few samples of these.
 
-The devices are supported by a variety of development platforms using assembly and C. 
-
-They use a harvard machine architecture.
+* PIC16Fxxx
 
 ## 8-bit series
-
-Todo
 
 ## 16-bit series
 
@@ -18,13 +14,11 @@ Todo
 
 ## Programming
 
-* Metalink Assembler
-* Microchip PIC Assembler
-* SDCC
-* MPLAB X IDE
+* [gputils](https://gputils.sourceforge.io)
+* [MPLAB XC8](https://ww1.microchip.com/downloads/en/DeviceDoc/MPLAB%20XC8%20PIC%20Assembler%20User%27s%20Guide%2050002974A.pdf)
+* [SDCC](https://sdcc.sourceforge.net) -- PIC support is unmaintained
 
 ## Links
 
 <a href="https://www.ozitronics.com/micropro.html">Ozitronics</a>
 
-https://www.ozitronics.com/download.html

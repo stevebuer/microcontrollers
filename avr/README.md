@@ -9,7 +9,6 @@ Chips I have:
 
 ## Development tools
 
-* [gputils](https://gputils.sourceforge.io)
 * [avr-gcc](https://gcc.gnu.org/wiki/avr-gcc)
 * [avr-libc](https://www.nongnu.org/avr-libc)
 * [MPLAB X IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
