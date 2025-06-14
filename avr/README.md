@@ -1,11 +1,20 @@
 # AVR Chips
 
-The AVR series of chips was originall development by Atmel.
+Atmel (now Microchip) AVR 8-bit microcontrollers.
+
+Chips I have:
+
+* [ATTiny 24/45/85](attiny/README.md)
+* [ATMEga 328](atmega328/README.md)
 
 ## Development tools
 
-* avr-gcc
+* [gputils](https://gputils.sourceforge.io)
+* [avr-gcc](https://gcc.gnu.org/wiki/avr-gcc)
+* [avr-libc](https://www.nongnu.org/avr-libc)
+* [MPLAB X IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
 
 ## Programmers
 
-USBASP V2.0
+* [USBasp](usbasp/README.md)
+* [USBtinyISP](usbtinyisp/README.md)
