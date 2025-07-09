@@ -5,13 +5,20 @@
 Features:
 
 * 35 instructions @ 4Mhz
-* 1024 x 12 bit flash program memory
+* 1024 x 14 bit flash program memory
 * 64 bytes static ram
 * 128 bytes data eeprom
 * 6 I/O pins
 * 1 8/16 bit timer
 * 1 comparator
 * 4 10-bit A/D channels
+
+Hardware:
+
+Register file is 64x8 in two banks selected by STATUS<5>.
+
+RP0 = 0 for Bank 0
+RP0 = 1 for Bank 1
 
 Purchased a pack of 5 chips for $3.99 (+$4 ship) from eBay 6/2025.
 
@@ -24,17 +31,36 @@ Purchased a pack of 5 chips for $3.99 (+$4 ship) from eBay 6/2025.
 * x : don't care
 * d : dest 0 (w) or 1 (f)
 
-Common instructions: byte oriented, bit oriented, literal & control
+Common instructions: bit oriented, byte oriented, literal & control
+
+Bit:
 
 * BCF (bit clear f)
 * BSF (bit set f)
+* BTFSC
+* BTFSS
+
+Byte:
+
 * CLEARF (clear f)
 * CLEARW (clear w)
 * ADDWF (add w and f)
 * MOVF
 * MOVWF
 
-[Blink Example](blink.asm)
+Literal / Control:
+
+* ADDLW (add literal and w)
+* MOVLW (move literal to w)
+* CALL
+* GOTO
+* RETURN
+* RETLW
+
+### Example Programs
+
+* [Blink Example](blink.asm)
+* [Button Example](button.asm)
 
 ## C
 
