@@ -15,10 +15,17 @@ Features:
 
 Hardware:
 
-Register file is 64x8 in two banks selected by STATUS<5>.
+Special Function Registers are in two 32 byte banks selected by STATUS<5>.
 
-RP0 = 0 for Bank 0
-RP0 = 1 for Bank 1
+RP0 = 0 for Bank 0 (core)
+
+RP0 = 1 for Bank 1 (peripheral)
+
+General Purpose Register file is 64x8 accessed by FSR.
+
+Reset vector 0h
+
+Interrupt vector 5h
 
 Purchased a pack of 5 chips for $3.99 (+$4 ship) from eBay 6/2025.
 
@@ -59,6 +66,8 @@ Literal / Control:
 
 ### Example Programs
 
+Assebled with gpasm on Linux.
+
 * [Blink Example](blink.asm)
 * [Button Example](button.asm)
 
@@ -71,3 +80,4 @@ Literal / Control:
 * [Datasheet](https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ProductDocuments/DataSheets/41190G.pdf)
 * [PIC mid-range reference manual](https://ww1.microchip.com/downloads/en/DeviceDoc/33023a.pdf)
 * [PIC Tutorial](https://groups.csail.mit.edu/lbr/stack/pic/pic-prog-assembly.pdf)
+* [PIC GPASM](https://www.t3ch.it/doku.php?id=content:pic:guide_assembling_linking_programming_linux)
