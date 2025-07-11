@@ -2,9 +2,9 @@
 
 16 Mhz Harvard architecture 8-bit MCU.
 
-<img src="stm8s003f3p6.png" size="50%">
+<img src="stm8s003f3p6.png" width="300">
 
-My device sample is an STM8S003F3P6 (Mainstream value line) with the following features:
+My device sample is an STM8S003F3P6 (mainstream value line) with the following features:
 
 * 8K flash program memory
 * 1K byte RAM
@@ -21,5 +21,9 @@ My device sample is an STM8S003F3P6 (Mainstream value line) with the following f
 # Development tools
 
 # Programming
+
+# References
+
+*[STM8 Wikipedia](https://en.wikipedia.org/wiki/STM8)
 
 
