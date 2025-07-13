@@ -1,4 +1,4 @@
-#!/bin/python3
+#!mydir/bin/python3
 # 
 # FT232H Blinka GPIO Example
 # Steve Buer

@@ -31,7 +31,8 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6015", GROUP="plugde
 3. Install blinka in a Pyton virtual environment. Bookworm does not seem to allow pip installs. Is blinka available in an apt repository?
 ```
 python -m venv mydir
-mydir/bin/pip3 install blinka
+mydir/bin/pip3 install adafruit-blinka
+mydir/bin/pip3 install adafruit-circuitpython-ht16k33
 ```
 
 4. Export shell variable
