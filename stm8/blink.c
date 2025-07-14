@@ -1,7 +1,7 @@
 /*
  * BLink Test LED on STM8S003F3P6 eBay development board
  *
- * compile with: sdcc -mstm8 led-test.c
+ * compile: sdcc -mstm8 led-test.c
  *
  * Steve Buer
  * July 2025
@@ -19,9 +19,10 @@
 
 unsigned char testvar;
 
-/* pointers to registers */
+/* create volatile pointers and assign register locations as their values */
 
-volatile unsigned char * PB_DDR = 0x5007; // pointer to register
+volatile unsigned char * PB_ODR = 0x5005;
+volatile unsigned char * PB_DDR = 0x5007;
 
 /* timer interrupt handler */
 

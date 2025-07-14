@@ -1,4 +1,6 @@
 #!mydir/bin/python3
+#
+# run in virtualenv mydir
 # 
 # FT232H Blinka GPIO Example
 # Steve Buer
