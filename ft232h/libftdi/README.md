@@ -12,6 +12,8 @@ libftdi1-2 is the currently maintained version and provides c++ bindings.
 
 Note: ftdio_sio module must be unloaded
 
+ToDo: check i2c mpsse android library
+
 Library supports:
 
 * GPIO
