@@ -9,34 +9,40 @@
 
 /* LED is on Port B pin 5 */
 
-#define PB_ODR *(volatile unsigned char *) 0x5005
-#define PB_IDR *(volatile unsigned char *) 0x5006
-// #define PB_DDR *(volatile unsigned char *) 0x5007
-#define PB_CR1 *(volatile unsigned char *) 0x5008
-#define PB_CR2 *(volatile unsigned char *) 0x5009
-
 #define PIN5 (1 << 5)
 
-unsigned char testvar;
+/* pointers to port B registers */
 
-/* create volatile pointers and assign register locations as their values */
+volatile unsigned char * PORTB_ODR = 0x5005;
+volatile unsigned char * PORTB_DDR = 0x5007;
+volatile unsigned char * PORTB_CR1 = 0x5008;
 
-volatile unsigned char * PB_ODR = 0x5005;
-volatile unsigned char * PB_DDR = 0x5007;
-
-/* timer interrupt handler */
-
-void timer_interrupt(void) __interrupt(20)
+void delay() 
 {
-	testvar++;
+	for (unsigned long n = 1000000L; n > 0; n--)
+		__asm__("nop");
 }
-
-/* main */
 
 int main() 
 {
-	*PB_DDR = 0b00101010; // put this value in location pointed to by PB_DDR
+	/* Port B data direction register (DDR) pin 5 output */
 
-	while(1)
-		__asm__("nop");
+	*PORTB_DDR = PIN5;
+
+	/* Port B configuration register (CR1) pin 5 push-pull */ 
+	
+	*PORTB_CR1 = PIN5;
+
+	while (1) {
+
+		/* Port B output data register (ODR) toggle */
+
+		*PORTB_ODR = PIN5; 
+		
+		delay();
+		
+		*PORTB_ODR &= 0;
+
+		delay();
+	}
 }
