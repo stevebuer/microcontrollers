@@ -1,7 +1,7 @@
 /*
- * BLink Test LED on STM8S003F3P6 eBay development board
+ * Blink Test LED on STM8S003F3P6 eBay development board
  *
- * compile: sdcc -mstm8 led-test.c
+ * compile: sdcc -mstm8 blink.c
  *
  * Steve Buer
  * July 2025
