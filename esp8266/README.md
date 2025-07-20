@@ -8,7 +8,7 @@ I have several ESP8266-01 boards.
 
 Espressif Systems <a href="https://en.wikipedia.org/wiki/ESP8266">microcontroller</a> with WiFi.
 
-<img src="esp8266.png">
+<img src="esp8266.jpg" width="300">
 
 There is also a USB serial plug-in adapter available for it based on the CH340 chip.
 
@@ -16,7 +16,7 @@ There is also a USB serial plug-in adapter available for it based on the CH340 c
 Bus 002 Device 005: ID 1a86:7523 QinHeng Electronics CH340 serial converter
 </pre>
 
-<img src="esp8266_usbserial.png">
+<img src="esp8266_usbserial.png" width="200">
 
 Note: This serial converter doesn't have a way to put the ESP8266 into programming mode. Needs
 button to pull GPIO0 to ground. A separate button can pull RST to ground for restart. Need to make a little board
