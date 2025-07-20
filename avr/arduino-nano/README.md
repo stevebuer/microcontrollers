@@ -9,16 +9,16 @@ Designed for breadboard use.
 ## Programming
 
 I have had this for many years, and at some point put a test program on it -- because it blinks
-my callsign in morse code!
+my callsign in morse code, but it won't load a sketch over serial.
 
-I think it is missing the bootloader, because I can't upload a sketch to it. Todo...
+Follow up: I was able to get the bootloader installed by selecting 'Processor: ATmega328P (old bootloader)'
+from the Arduino IDE. Now I can upload sketches via serial monitor.
+
+I will solder on the other two pin headers and use this for breadboard projects.
 
 ## Pins
 
 Arduino pinout [pdf file](https://docs.arduino.cc/resources/pinouts/A000005-full-pinout.pdf)
-
-<img alt="Arduino Nano pins" width="300" src="https://europe1.discourse-cdn.com/arduino/original/4X/7/d/e/7deffc03b7fe0f7c22f6615d59a7161efcb86ec6.png">
-
 
 ## Reference
 

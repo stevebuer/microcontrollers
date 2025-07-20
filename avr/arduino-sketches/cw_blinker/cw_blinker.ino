@@ -5,7 +5,7 @@
 
 #include <cww_MorseTx.h>
 
-#define CW_SPEED 10
+#define CW_SPEED 13
 
 cww_MorseTx morse(LED_BUILTIN, CW_SPEED);
 

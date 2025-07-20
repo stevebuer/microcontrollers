@@ -43,4 +43,8 @@ Makefile has some examples.
 
 To upload a sketch using the USBASP, select Sketch->Upload Using Programmer from the Arduino IDE menu.
 
+### Device Programming Notes
+
+To burn the bootloader on my Arduino Nano clone, I had to select 'Processor: ATMega328P (old bootload)' to overcome complaints about fuse bits.
+
 ## References
