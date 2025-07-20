@@ -1,4 +1,7 @@
-// Send CQ on the Builtin LED for testing
+/*
+ * Send test message on built-in LED
+ * Steve Buer, N7MKO
+ */
 
 #include <cww_MorseTx.h>
 
@@ -13,18 +16,16 @@ void setup() {
 
 void loop() {
 
-    Serial.println("Sending CQ");
+    Serial.println("Sending CW test...");
 
-    morse.send("CQ DE N7MKO");
+    morse.send("V V V DE N7MKO N7MKO N7MKO");
 
-    // morse.send("V K V K 73");
-
-    delay(5000);
+    delay(2000);
 }
 
-// Upload Notes
-
+// Device Notes:
+//
 // Red Mini: Arduino Pro/Mini 328P 3.3V, 8Mhz
 // Blue Mini: Arduino Pro/Mini 328P 5V, 16Mhz
-
-// Adafruit USB Serial: Blk=GND, RED=5V, Green=USB TX out, White= USB RX in
+//
+// Adafruit USB Serial: Blk=GND, RED=5V, Green=USB TX out, White=USB RX in
