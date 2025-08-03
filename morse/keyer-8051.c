@@ -6,12 +6,21 @@
  * Steve Buer, N7MKO
  */
 
-#include <stdio.h>
-
 void dah()
 {
 }
 
 void dit()
 {
+}
+
+void space()
+{
+}
+
+/* sdcc requires a user-provided putchar() implementation */
+
+void putchar(char c)
+{
+	c = c + 1;
 }

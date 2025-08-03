@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "micromorse.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define DIGITS 10 	/* 10 digits in our table */
 #define DIGIT_LEN 5 	/* numerals are fixed length */
