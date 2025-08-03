@@ -2,4 +2,8 @@ CC=gcc
 
 all:
 
-	$(CC) micromorse.c -o micromorse
+	$(CC) micromorse.c keyer-alsa.c -o micromorse
+
+alsa:
+
+	gcc -o alsa-sine alsa-sine.c -lasound -lm

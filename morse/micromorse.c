@@ -7,20 +7,19 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h> /* atoi -- write macro */
+#include "micromorse.h"
 
 #define DEBUG 1
 
-#define DIGITS 10
-#define DIGIT_LEN 5 /* numerals are fixed code length */
-#define ALPHABET 26
-#define ABASE 97 /* alphabet zero index offset: ascii 'a' == 97 */
+#define DIGITS 10 	/* 10 digits in our table */
+#define DIGIT_LEN 5 	/* numerals are fixed length */
+#define ALPHABET 26 	/* 26 letters in our table */
 
 /* dot: 0, dash: 1 */
 
 uint8_t morse_digits[DIGITS] = { 0b11111, 0b11110, 0b11100, 0b11000, 0b10000, 0b11111, 0b00001, 0b00011, 0b00111, 0b01111 }; 
 
-/* for letters, store length in upper 3 bits -- encoding in lower 4 */
+/* for letters, store length in upper 3 bits -- dit/dah encoding in lower 4 */
 
 uint8_t morse_letters[ALPHABET] = {
 
@@ -52,19 +51,19 @@ uint8_t morse_letters[ALPHABET] = {
 	(0x4 << 5) | 0b0011 	/* z */
 };
 
-/* send a digit */
-
 void send_digit(uint8_t code)
 {
 	for (int i = 0; i < DIGIT_LEN; i++) {
 
 		if (code & 0x1)
-			printf("dah ");
+			dah();
 		else
-			printf("dit ");
+			dit();
 		
 		code = code >> 1;
 	}
+	
+	space();
 }
 
 /* send letters */
@@ -80,12 +79,14 @@ void send_letter(uint8_t code)
 	for (int i = 0; i < len; i++) {
 
 		if (code & 0x1)
-			printf("dah ");
+			dah();
 		else
-			printf("dit ");
+			dit();
 		
 		code = code >> 1;
 	}
+	
+	space();
 }
 
 /* send a string of characters */
@@ -93,19 +94,28 @@ void send_letter(uint8_t code)
 void morse_sendmsg(char *msg)
 {
 	do {
-		if (*msg >= 48 && *msg <= 57) {
+		if (*msg >= '0' && *msg <= '9') {
 
 			printf("sending digit: %c\n", *msg);
-			// send_digit(NUM_LEN, morse_digits[]); fixme
+			send_digit(morse_digits[*msg - '0']);
 
-		} else if (*msg == 32)
+		} else if (*msg == ' ') {
+
 			printf("sending space\n");
-		else
+			space();
+		
+		} else if (*msg >= 'a' && *msg <= 'z') {
+
 			printf("sending letter: %c\n", *msg);
+			send_letter(morse_letters[*msg - 'a']);
 
-		// check for lower/upper case letters and reject invalid chars
+		} else if (*msg == '.') {
+			
+			printf("sending period\n");
+			dit(); dah(); dit(); dah(); dit(); dah();
 
-		// send period.
+		} else
+			printf("unknown character\n");
 
 	} while (*++msg != '\0');
 }
@@ -115,6 +125,10 @@ void morse_sendmsg(char *msg)
 int main()
 {
 
+	morse_sendmsg("so");
+
+	goto done;
+
 	goto letters;
 
 	printf("sending test string: 'vvv de n7mko'\n");
@@ -123,34 +137,34 @@ int main()
 	letters:
 
 	printf("testing letter patterns...\n");
-	printf("a: "); send_letter(morse_letters['a' - ABASE]); putchar('\n');
-	printf("b: "); send_letter(morse_letters['b' - ABASE]); putchar('\n');
-	printf("c: "); send_letter(morse_letters['c' - ABASE]); putchar('\n');
-	printf("d: "); send_letter(morse_letters['d' - ABASE]); putchar('\n');
-	printf("e: "); send_letter(morse_letters['e' - ABASE]); putchar('\n');
-	printf("f: "); send_letter(morse_letters['f' - ABASE]); putchar('\n');
-	printf("g: "); send_letter(morse_letters['g' - ABASE]); putchar('\n');
-	printf("h: "); send_letter(morse_letters['h' - ABASE]); putchar('\n');
-	printf("i: "); send_letter(morse_letters['i' - ABASE]); putchar('\n');
-	printf("j: "); send_letter(morse_letters['j' - ABASE]); putchar('\n');
-	printf("k: "); send_letter(morse_letters['k' - ABASE]); putchar('\n');
-	printf("l: "); send_letter(morse_letters['l' - ABASE]); putchar('\n');
-	printf("m: "); send_letter(morse_letters['m' - ABASE]); putchar('\n');
-	printf("n: "); send_letter(morse_letters['n' - ABASE]); putchar('\n');
-	printf("o: "); send_letter(morse_letters['o' - ABASE]); putchar('\n');
-	printf("p: "); send_letter(morse_letters['p' - ABASE]); putchar('\n');
-	printf("q: "); send_letter(morse_letters['q' - ABASE]); putchar('\n');
-	printf("r: "); send_letter(morse_letters['r' - ABASE]); putchar('\n');
-	printf("s: "); send_letter(morse_letters['s' - ABASE]); putchar('\n');
-	printf("t: "); send_letter(morse_letters['t' - ABASE]); putchar('\n');
-	printf("u: "); send_letter(morse_letters['u' - ABASE]); putchar('\n');
-	printf("v: "); send_letter(morse_letters['v' - ABASE]); putchar('\n');
-	printf("w: "); send_letter(morse_letters['w' - ABASE]); putchar('\n');
-	printf("x: "); send_letter(morse_letters['x' - ABASE]); putchar('\n');
-	printf("y: "); send_letter(morse_letters['y' - ABASE]); putchar('\n');
-	printf("z: "); send_letter(morse_letters['z' - ABASE]); putchar('\n');
+	printf("a: "); send_letter(morse_letters['a' - 'a']); putchar('\n');
+	printf("b: "); send_letter(morse_letters['b' - 'a']); putchar('\n');
+	printf("c: "); send_letter(morse_letters['c' - 'a']); putchar('\n');
+	printf("d: "); send_letter(morse_letters['d' - 'a']); putchar('\n');
+	printf("e: "); send_letter(morse_letters['e' - 'a']); putchar('\n');
+	printf("f: "); send_letter(morse_letters['f' - 'a']); putchar('\n');
+	printf("g: "); send_letter(morse_letters['g' - 'a']); putchar('\n');
+	printf("h: "); send_letter(morse_letters['h' - 'a']); putchar('\n');
+	printf("i: "); send_letter(morse_letters['i' - 'a']); putchar('\n');
+	printf("j: "); send_letter(morse_letters['j' - 'a']); putchar('\n');
+	printf("k: "); send_letter(morse_letters['k' - 'a']); putchar('\n');
+	printf("l: "); send_letter(morse_letters['l' - 'a']); putchar('\n');
+	printf("m: "); send_letter(morse_letters['m' - 'a']); putchar('\n');
+	printf("n: "); send_letter(morse_letters['n' - 'a']); putchar('\n');
+	printf("o: "); send_letter(morse_letters['o' - 'a']); putchar('\n');
+	printf("p: "); send_letter(morse_letters['p' - 'a']); putchar('\n');
+	printf("q: "); send_letter(morse_letters['q' - 'a']); putchar('\n');
+	printf("r: "); send_letter(morse_letters['r' - 'a']); putchar('\n');
+	printf("s: "); send_letter(morse_letters['s' - 'a']); putchar('\n');
+	printf("t: "); send_letter(morse_letters['t' - 'a']); putchar('\n');
+	printf("u: "); send_letter(morse_letters['u' - 'a']); putchar('\n');
+	printf("v: "); send_letter(morse_letters['v' - 'a']); putchar('\n');
+	printf("w: "); send_letter(morse_letters['w' - 'a']); putchar('\n');
+	printf("x: "); send_letter(morse_letters['x' - 'a']); putchar('\n');
+	printf("y: "); send_letter(morse_letters['y' - 'a']); putchar('\n');
+	printf("z: "); send_letter(morse_letters['z' - 'a']); putchar('\n');
 	
-	goto done;
+	// goto done;
 
 	printf("testing number patterns...\n");
 	printf("0: "); send_digit(morse_digits[0]); putchar('\n');
