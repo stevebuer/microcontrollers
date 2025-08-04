@@ -1,5 +1,5 @@
-#CC=gcc
-CC=sdcc
+CC=gcc
+#CC=sdcc
 
 all:
 
@@ -14,3 +14,7 @@ all:
 alsa:
 
 	gcc -o alsa-sine alsa-sine.c -lasound -lm
+
+clean:
+
+	@rm -f *.hex *.lk *.rst *.rel *.asm *.o *.ihx *.lst *.map *.mem *.sym

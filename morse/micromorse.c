@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "micromorse.h"
 
-#define DEBUG 0
+#define TESTPROG 1
 
 #define DIGITS 10 	/* 10 digits in our table */
 #define DIGIT_LEN 5 	/* numerals are fixed length */
@@ -17,7 +17,7 @@
 
 /* dot: 0, dash: 1 */
 
-uint8_t morse_digits[DIGITS] = { 0b11111, 0b11110, 0b11100, 0b11000, 0b10000, 0b11111, 0b00001, 0b00011, 0b00111, 0b01111 }; 
+uint8_t morse_digits[DIGITS] = { 0b11111, 0b11110, 0b11100, 0b11000, 0b10000, 0b00000, 0b00001, 0b00011, 0b00111, 0b01111 }; 
 
 /* for letters, store length in upper 3 bits -- dit/dah encoding in lower 4 */
 
@@ -62,8 +62,6 @@ void send_digit(uint8_t code)
 		
 		code = code >> 1;
 	}
-	
-	space();
 }
 
 /* send letters */
@@ -73,7 +71,7 @@ void send_letter(uint8_t code)
 	int len = (code & 0b11100000) >> 5;
 
 #if DEBUG
-	printf("length: %d : ", len);
+	printf("length: %d: ", len);
 #endif
 
 	for (int i = 0; i < len; i++) {
@@ -85,8 +83,8 @@ void send_letter(uint8_t code)
 		
 		code = code >> 1;
 	}
+
 	
-	space();
 }
 
 /* send a string of characters */
@@ -102,7 +100,7 @@ void morse_sendmsg(char *msg)
 		} else if (*msg == ' ') {
 
 			printf("sending space\n");
-			space();
+			word_space();
 		
 		} else if (*msg >= 'a' && *msg <= 'z') {
 
@@ -117,23 +115,15 @@ void morse_sendmsg(char *msg)
 		} else
 			printf("unknown character\n");
 
+		putchar('\n');
+
 	} while (*++msg != '\0');
 }
 
-#if DEBUG
+#if TESTPROG
 
 int main()
 {
-
-	morse_sendmsg("so");
-
-	goto done;
-
-	goto letters;
-
-	printf("sending test string: 'vvv de n7mko'\n");
-	morse_sendmsg("vvv de n7mko");
-
 	letters:
 
 	printf("testing letter patterns...\n");
@@ -164,7 +154,7 @@ int main()
 	printf("y: "); send_letter(morse_letters['y' - 'a']); putchar('\n');
 	printf("z: "); send_letter(morse_letters['z' - 'a']); putchar('\n');
 	
-	// goto done;
+	numbers:	
 
 	printf("testing number patterns...\n");
 	printf("0: "); send_digit(morse_digits[0]); putchar('\n');
@@ -177,6 +167,11 @@ int main()
 	printf("7: "); send_digit(morse_digits[7]); putchar('\n');
 	printf("8: "); send_digit(morse_digits[8]); putchar('\n');
 	printf("9: "); send_digit(morse_digits[9]); putchar('\n');
+
+	testmsg:
+	
+	printf("sending test string: 'vvv de n7mko'\n");
+	morse_sendmsg("vvv de n7mko");
 
 	done:
 

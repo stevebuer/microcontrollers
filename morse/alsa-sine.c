@@ -21,7 +21,7 @@
 #define AMPLITUDE 32000
 #define CHANNELS 1
 
-#define DEBUG 
+#define TESTPROG
 
 #define DIT 0.050
 #define DAH 0.150
@@ -82,7 +82,7 @@ int beep(float duration)
     return 0;
 }
 
-#ifdef DEBUG
+#ifdef TESTPROG
 
 int main()
 {

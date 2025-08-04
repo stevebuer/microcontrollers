@@ -10,25 +10,35 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-/* todo: calculate wpm and timing */
+#include "micromorse.h"
 
-/* todo: open audio dev and play a sine wave */
+#define MICROS_PER_MILLI 1000
+
+void alsa_begin()
+{
+	/* todo */
+}
+
+void alsa_end()
+{
+	/* close */
+}
 
 void dah()
 {
-        printf("dah ");
-	system("play -n synth 0.6 sine 750 vol 0.5");
-	// usleep(200*1000); // 200 msec
+        printf("-");
+	// alsa_play() sine wave DOT_TIME
+	usleep(DOT_TIME*MICROS_PER_MILLI);
 }
 
 void dit()
 {
-        printf("dit ");
-	system("play -n synth 0.2 sine 750 vol 0.5");
-	// usleep(200*1000); // 200 msec
+        printf(".");
+	// alsa_play() sine wave DASH_TIME
+	usleep(DOT_TIME*MICROS_PER_MILLI);
 }
 
-void space()
+void word_space()
 {
-	usleep(300*1000); // 200 msec
+	usleep(300*1000); 
 }

@@ -1,5 +1,15 @@
 # Simple and portable morse routines for microcontrollers
 
+## Morse Timing
+
+<pre>
+Dot: The shortest unit of time.
+Dash: Three times the duration of a dot.
+Space between dots and dashes within a letter: One dot duration.
+Space between letters: Three dot durations.
+Space between words: Seven dot durations.
+</pre>
+
 ## C Language
 
 Basic morse code routines in micromorse.c with micromorse.h include file.
@@ -10,15 +20,10 @@ Todo
 
 ## Testing on Linux with PC Speaker
 
-### Beep command
+## Beep command
 
-```
-apt install beep
-```
+Doesn't want to work.
 
-<pre>
-steve@kitsap:~/GITHUB/microcontrollers/morse$ sudo beep
-beep: Error: Running as root under sudo, which is not supported for security reasons.
-beep: Error: Set up permissions for the pcspkr evdev device file and run as non-root user instead.
-</pre>
+## Alsa Sine Wave
 
+AI-generated code for this.
