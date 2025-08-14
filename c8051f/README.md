@@ -29,7 +29,7 @@ This is a cheap clone that supports JTAG and C2 protocol.
 
 <img alt="C8051 Debug Adapter" src="c8051-debug.jpg" width="400">
 
-It is supported by the [ec2/ec2tools library](https://github.com/tridge/ec2) 
+It is supported by the [ec2drv-new library](https://github.com/paragonRobotics/ec2-new.git) 
 
 <pre>
 Bus 002 Device 011: ID 10c4:8044 Silicon Labs USB Debug Adapter
