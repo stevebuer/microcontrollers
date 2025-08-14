@@ -31,6 +31,8 @@ This is a cheap clone that supports JTAG and C2 protocol.
 
 It is supported by the [ec2drv-new library](https://github.com/paragonRobotics/ec2-new.git) 
 
+Note: build library with cmake.
+
 <pre>
 Bus 002 Device 011: ID 10c4:8044 Silicon Labs USB Debug Adapter
 </pre>
