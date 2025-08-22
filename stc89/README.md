@@ -7,7 +7,13 @@ Small development board. STC89C52RC 40 pin DIP.
 
 ## Development Board
 
-Minimal development board from eBay.
+Minimal development board from eBay. It came with a 12 Mhz crystal -- higher baud rates give errors. 2400 baud ok.
+
+Installed paulmon with no errors.
+
+```
+steve@kitsap:~/STCGAL$ myvenv/bin/stcgal -P stc89 -b 2400 -p /dev/ttyUSB0 paulmon21.hex 
+```
 
 <img src="stc89_board.jpg">
 
