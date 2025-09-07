@@ -6,7 +6,7 @@ Sketches for:
 * Arduino Pro Mini
 * Arduino Nano
 * [Adafruit Trinket](../trinket)
-* Digispark
+* [Digispark](DIGISPARK.md)
 
 ## Modules
 
