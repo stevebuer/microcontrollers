@@ -5,7 +5,7 @@ Sketches for:
 * Arduino Uno R3
 * Arduino Pro Mini
 * Arduino Nano
-* [Adafruit Trinket](../trinket)
+* [Adafruit Trinket](TRINKET.md)
 * [Digispark](DIGISPARK.md)
 
 ## Modules
