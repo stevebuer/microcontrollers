@@ -6,6 +6,8 @@ I have several samples of this architecture including:
 * STM32VLDISCOVERY
 * STM32F103C8T6 (Blue Pill)
 
+<img src="STM32FxCxT6-devboard.jpg" width="200">
+
 # Instruction Set
 
 # Development tools
