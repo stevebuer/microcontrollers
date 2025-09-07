@@ -26,7 +26,7 @@ Sketches for:
 * I2C 7-segment backpack
 * I2C/SPI mini LCD
 * PN532 NFC RFID
-* TEA5767 FM Tuner
+* [TEA5767 FM Tuner](tea5767)
 * [SC16IS650 I2C/SPI to UART](https://www.nxp.com/docs/en/data-sheet/SC16IS740_750_760.pdf)
 * [CH375B USB Drive Reader](http://www.bitsavers.org/components/wch/_dataSheets/CH375.PDF)
 * 250V AC / 30V DC relay module
