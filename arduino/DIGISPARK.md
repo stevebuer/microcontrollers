@@ -2,6 +2,7 @@
 
 I have several of these boards.
 
+<img src="digispark.jpg" width="200">
 <img src="digispark-devboard.jpg" width="200">
 
 The Arduino [ATTiny Core](https://github.com/SpenceKonde/ATTinyCore) is available on Github.
@@ -26,3 +27,7 @@ The [Optiboot Bootloader](https://github.com/Optiboot/optiboot) uses serial comm
 a USB-serial converter.
 
 The bootloaders will be available to install via the board support packages in the Arduino IDE.
+
+## Programming
+
+My Digispark is about 10 years old. Works with Arduino ATTiny Core: Board (Attiny 85 / Micronucleus). Set programmer type to Micronucleus.
