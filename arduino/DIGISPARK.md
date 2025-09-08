@@ -2,8 +2,9 @@
 
 I have several of these boards.
 
-<img src="digispark.jpg" width="200">
-<img src="digispark-devboard.jpg" width="200">
+<img src="images/digispark.jpg" width="200">
+<img src="images/digispark-devboard.jpg" width="200">
+<img src="images/digispark-tiny85.jpg" width="200">
 
 The Arduino [ATTiny Core](https://github.com/SpenceKonde/ATTinyCore) is available on Github.
 

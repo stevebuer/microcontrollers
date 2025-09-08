@@ -1,5 +1,21 @@
-# Electronics and related programming projects
+# Microcontrollers and Programmers
 
-* FT232H
-* BMP280
+## Microcontrollers
 
+* 8051
+* AVR
+* STM8
+* STM32
+* MSP430
+
+## Memory
+
+* SRAM
+* EPROM
+* EEPROM
+
+## Programmers
+
+* USBasp
+* USBtinyISP
+* CH341A
