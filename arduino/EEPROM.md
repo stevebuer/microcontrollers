@@ -6,7 +6,7 @@
 
 Atmel AT24C256 (256KB) i2C EEPROM breakout board.
 
-<img src="serial/eeprom-module.jpg" width="200">
+<img src="images/eeprom-module.jpg" width="200">
 
 Pinout
 

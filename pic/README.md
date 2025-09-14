@@ -2,7 +2,8 @@
 
 I have a few of these chips and a K150 programmer.
 
-* PIC16Fxxx
+* [PIC12F675](pic12f675/README.md)
+* PIC16x
 
 ## Datasheets
 
@@ -10,6 +11,22 @@ I have a few of these chips and a K150 programmer.
 * [PIC16F87x](https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ProductDocuments/DataSheets/30292D.pdf)
 
 ## Programming
+
+* gputils (Linux) assembler and related utilities
+* sdcc (Linux) limited support for PIC platform
+* Microchip MPLAB
+
+Configuring SDCC for PIC devices on Debian:
+
+Using inc2h.pl:
+
+The SDCC project provides a script called cinc2h.pl that can parse Microchip's .inc files (from gputils) and convert them into a .h (header file) format compatible with SDCC.
+
+* sdcc package contains: /usr/share/sdcc/scripts/cinc2h.pl
+* Microchip .inc filesare in /usr/share/gputils/header/
+* Use cinc2h.pl script to convert these .inc files into .h files and place them in /usr/share/sdcc/include/pic/
+
+## References
 
 * [PIC Instructions](https://en.wikipedia.org/wiki/PIC_instruction_listings)
 * [Instruction Set](https://technology.niagaracollege.ca/staff/mboldin/18F_Instruction_Set)
