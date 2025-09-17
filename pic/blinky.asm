@@ -2,7 +2,7 @@
 ; PIC16 Blinky
 ;
 
-LIST p=PIC16f690
+LIST p=PIC12f675
 
 ERRORLEVEL -302
 
