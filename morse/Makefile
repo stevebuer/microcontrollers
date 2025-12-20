@@ -17,4 +17,4 @@ alsa:
 
 clean:
 
-	@rm -f *.hex *.lk *.rst *.rel *.asm *.o *.ihx *.lst *.map *.mem *.sym
+	@rm -f alsa-sine micromorse *.hex *.lk *.rst *.rel *.asm *.o *.ihx *.lst *.map *.mem *.sym
