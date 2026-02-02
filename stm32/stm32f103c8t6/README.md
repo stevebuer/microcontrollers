@@ -1,15 +1,21 @@
 # STM32F103C8T6 Development Board
 
-* 72 Mhz Arm Cortex-M3 
+* 8 Mhz xtal
+* 72 Mhz (max) Arm Cortex-M3 
 * 64 KB Flash
 * 20 KB SRAM
 * USB 2.0, CAN, i2C, SPI, USART, iRDA, LIN
+* JTAG + SWD
 
 <img src="stm32f103_programming.jpg" width="200">
 
 <img src="stm32f103_bluepill.jpg" width="200">
 
 Todo: document differences between these two boards.
+
+LED on GPIO pin 13.
+
+Todo: USB Port Program loading via pin config?
 
 ## Development Notes
 
@@ -39,12 +45,18 @@ FreeRTOS supports this architecture and has a couple of examples.
 
 ## Programming
 
+### ST Link
+
 Programming is performed via STLink adapter, supported by *stlink-tools* package on Debian.
 
 * st-flash
 * st-info
 * st-trace
 * st-util
+
+### OpenOCD JTAG
+
+Todo OpenOCD config + test
 
 ## References
 
