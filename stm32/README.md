@@ -14,7 +14,7 @@ STM32Cube is their configuration and development system that includes:
 
 * STM32CubeMX graphical configuration and code generation tool.
 * Cortex Microcontroller Software Interface Standard (CMSIS) for each family e.g. STM32CubeF1 which provides:
-   * Board Support Package
+   * Board Support Package (for devices on ST Dev Boards: displays, etc)
    * STM32 HAL
    * Lower Layer (LL) APIs which provide expert access for certain peripherals
    * Middleware components: RTOS, USB, Filesytem, Graphics
