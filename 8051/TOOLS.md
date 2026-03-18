@@ -20,9 +20,9 @@ Windows command-line assembler supporting Microchip (formerly Atmel) AT89xxxx ch
 
 ### MCU 8051 IDE
 
-Open source IDE
+Open source IDE with simulator and debugger.
 
-[SourceForge Project Page](https://sourceforge.net/projects/mcu8051ide)
+Used version 1.4.9 from [SourceForge Project Page](https://sourceforge.net/projects/mcu8051ide)
 
 ### Keil uVision
 
@@ -36,6 +36,7 @@ Windows IDE is part of MDKv6
 
 * Supports all their C8051Fxxx chips
 * Uses Keil PK51?
+* Configuration generator program is available separately
 
 ### IAR Embedded Workbench
 
