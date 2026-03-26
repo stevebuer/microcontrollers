@@ -12,6 +12,11 @@ Cortex Microcontroller Software Interface Standard (CMSIS) [Github repository](h
 * USB Device Mode
 * RTOS AX.25 Decoder
 
+### Project Templates
+
+* STM32CubeMX
+* SPL
+
 ## Toolchains
 
 ### Linux
@@ -36,6 +41,18 @@ Programming is performed via STLink adapter, supported by *stlink-tools* package
 * st-info
 * st-trace
 * st-util
+
+### Misc
+
+Shell Variables
+
+```
+export CC=arm-none-eabi-gcc
+export AS=arm-none-eabi-as
+export OBJCOPY=arm-none-eabi-objcopy
+export CFLAGS="-ICore/Inc -IUser"
+alias mcc="$CC $CFLAGS"
+```
 
 ## References
 
