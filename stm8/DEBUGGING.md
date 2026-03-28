@@ -85,3 +85,7 @@ Debugging STM8 with OpenOCD and GDB **is absolutely possible**, but requires:
 - An ELF file with DWARF2 debug info (SDCC supports this)
 
 Once set up, you can step through code, inspect registers, and debug much like on ARM microcontrollers.
+
+### Notes
+
+Trace32 Debugger
