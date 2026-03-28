@@ -1,6 +1,10 @@
 # ST Micro STM8 8-bit microcontroller
 
-16 Mhz Harvard architecture 8-bit MCU.
+Harvard architecture 8-bit MCUs up to 24 Mhz.
+
+* STM8S: mainstream MCU (3V and 5V families)
+* STM8L: ultra low power MCU (1.65V and 3V families)
+* STM8AF, STM8AL: automotive MCU
 
 <img src="stm8s003f3p6.png" width="300">
 
@@ -22,19 +26,20 @@ My device sample is an STM8S003F3P6 (mainstream value line) with the following f
 * 6 registers: X & Y (16 bit indexes), PC (24 bit program counter), SP (16 bit stack pointer), A (8-bit accumulator), CC (8-bit condition code)
 * 20 addressing modes
 * 80 instructions
-
 * 16 MB linear program space
 * 16 MB linear data space
-
 * MUL/DIV Instructions
 
 ## Development tools
 
 ### STM8 Standard Peripheralis Library (SPL)
 
-* [ST Library](https://my.st.com/content/my_st_com/en/products/embedded-software/mcus-embedded-software/stm8-embedded-software/stsw-stm8069.html)
+* [ST Micro Library](https://my.st.com/content/my_st_com/en/products/embedded-software/mcus-embedded-software/stm8-embedded-software/stsw-stm8069.html)
+* [STM8-SPL-SDCC](https://github.com/bschwand/STM8-SPL-SDCC)
 * [SDCC Patched Library](https://github.com/gicking/STM8-SPL_SDCC_patch)
-* [Other version](https://github.com/gicking/STM8-SPL_SDCC_patch)
+* [Stecman Version](https://github.com/stecman/stm8s-sdcc)
+
+More detail [here](SPL.md)
 
 ### ST Visual Develop / ST Assembler-Linker / ST Visual Programmer
 
@@ -44,6 +49,10 @@ to give it a try. I need to read up a little on the assembler syntax. The IDE is
 ### Small Device C Compiler (SDCC)
 
 The [SDCC](https://sdcc.sourceforge.net) was used for the C examples here.
+
+### Debugging
+
+Debugging support on Linux is [described here](DEBUGGING.md).
 
 ## Programming
 
@@ -88,6 +97,6 @@ The [ST Link Open Source](https://github.com/stlink-org/stlink) is available for
 ## References
 
 * [STM8 Wikipedia](https://en.wikipedia.org/wiki/STM8)
-* [Data Sheet](https://www.st.com/resource/en/datasheet/stm8s003f3.pdf)
+* [STM8S003F3 Data Sheet](https://www.st.com/resource/en/datasheet/stm8s003f3.pdf)
 * [Programming Guide](file:///home/steve/Downloads/pm0044-stm8-cpu-programming-manual-stmicroelectronics.pdf)
 * [lujji stm8 bare metal programming](https://lujji.github.io/blog/bare-metal-programming-stm8)
