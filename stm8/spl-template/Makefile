@@ -6,25 +6,21 @@
 TARGET      := firmware
 
 # MCU family (used for include paths and optional flags)
-MCU         := STM8S103
+MCU         := STM8S003
 
 # Path to the stm8s-sdcc SPL (clone from https://github.com/stecman/stm8s-sdcc)
-SPL_PATH    := ~/STM8/STM8S/stm8s-sdcc
+SPL_PATH    := $(HOME)/STM8/STM8S/stm8s-sdcc
 
 # Project source files
 SRC_DIR     := src
+INC_DIR	    := inc
 SOURCES     := $(wildcard $(SRC_DIR)/*.c)
 
 # SPL source files (you may trim this list to only what you use)
-SPL_SOURCES := $(wildcard $(SPL_PATH)/src/*.c)
-
-#
-# Sources can also be specified individually such as
-#
-# SPL_SOURCES := \
-#  $(SPL_PATH)/src/stm8s_gpio.c \
-#  $(SPL_PATH)/src/stm8s_clk.c \
-#  $(SPL_PATH)/src/stm8s_uart1.c
+SPL_SOURCES := \
+  $(SPL_PATH)/src/stm8s_clk.c \
+  $(SPL_PATH)/src/stm8s_gpio.c \
+  $(SPL_PATH)/src/stm8s_uart1.c
 
 # Output directory
 BUILD_DIR   := build
@@ -36,11 +32,12 @@ BUILD_DIR   := build
 CC          := sdcc
 OBJCOPY     := packihx
 
-CFLAGS      := -mstm8 \
+CFLAGS      := -mstm8 -D$(MCU) \
                --std-sdcc99 \
                --opt-code-size \
                -I$(SRC_DIR) \
-               -I$(SPL_PATH)/inc
+	       -I$(INC_DIR) \
+               -I$(SPL_PATH)/inc \
 
 LDFLAGS     := -mstm8
 
