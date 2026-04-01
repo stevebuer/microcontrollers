@@ -1,8 +1,10 @@
-# 8051 Register File
+# 8051 Registers
 
 <img src="https://www.8052mcu.com/images/sfr8051.gif">
 
 SFR map from [8052mcu.com](https://www.8052mcu.com/tutsfr.htm)
+
+SP defaults to 0x07. CALL (2 bytes), PUSH (1 byte), and interrupts then store 2 bytes for PC load on RET, RETI (pop 2 bytes). POP will get 1 byte.
 
 ## Bit Addressable Rule
 

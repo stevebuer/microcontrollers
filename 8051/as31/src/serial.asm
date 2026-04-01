@@ -16,7 +16,7 @@ BEGIN:
 	MOV TH1, #0FDH		; 9600 baud @ 11.0592 MHz
 	SETB TR1		; start timer 1
 
-	MOV R0, #LINE		; read buffer
+	MOV R0, #LINE		; set read pointer
 
 PROMPT: 
 	MOV SBUF, #'>'
@@ -35,3 +35,6 @@ WRAP:
 	MOV R0, #LINE		; wrap buffer
 NEXT:	
 	SJMP READ
+
+; to do: check end of line char
+; set line ready bit var
