@@ -7,4 +7,7 @@
 *.rel
 *.rst
 *.sym
-
+*.cdb
+*.mem
+*.omf
+*.hex
