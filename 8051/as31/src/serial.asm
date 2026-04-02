@@ -14,6 +14,7 @@ BEGIN:
 	MOV SCON, #50H		; mode 1, REN = 1
 	MOV TMOD, #20H		; timer mode 2
 	MOV TH1, #0FDH		; 9600 baud @ 11.0592 MHz
+	MOV TL1, #0FDH		
 	SETB TR1		; start timer 1
 
 	MOV R0, #LINE		; set read pointer
