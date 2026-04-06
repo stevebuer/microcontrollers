@@ -1,6 +1,10 @@
 # ST Micro STM8 8-bit microcontroller
 
-Von Neumann architecture 8-bit MCUs up to 24 Mhz.
+Harvard architecture 8-bit MCUs up to 24 Mhz.
+
+These are older line of chips, NRND but a great learning platform. 
+
+They are available as low-cost minimal board on eBay and remaing stock of ST evaluation boards.
 
 * STM8S: mainstream MCU (3V and 5V families)
 * STM8L: ultra low power MCU (1.65V and 3V families)
@@ -32,13 +36,21 @@ Above is an STM8S003F3P6 (mainstream value line) with the following features:
 
 ## Development tools
 
+This repository is divided into two separate approaches.
+
+1. Hobby-type boards from eBay are used with SDCC and the open source tools on Linux.
+2. ST Micro evaluation boards are used with ST Micro toolchains on Windows 10. VSCode gives a modernized editing environment.
+
 ### ST Visual Develop / ST Assembler-Linker / ST Visual Programmer
 
-A few different tools are available for the STM8 chips. I have installed ST Visual Develop, which comes with the [ST Assembler-Linker](https://www.st.com/resource/en/user_manual/um0144-st-assemblerlinker-stmicroelectronics.pdf).
+ST Visual Develop (STVD) supports several different toolchains, but I am focusing on two:
 
-I need to check into adding the Cosmic C compiler.
+* The [ST Assembler-Linker](https://www.st.com/resource/en/user_manual/um0144-st-assemblerlinker-stmicroelectronics.pdf).
+* The [Cosmic C Compiler](https://cosmic-software.com/stm8.php)
 
-### Small Device C Compiler (SDCC)
+I have some VS Code configuration and automation in-progress for stm8 work on Windows as well.
+
+### Small Device C Compiler (SDCC) and related free tools.
 
 The [SDCC](https://sdcc.sourceforge.net) was used for the C examples here.
 

@@ -1,5 +1,4 @@
 # SDCC build artifacts
-*.asm
 *.ihx
 *.lk
 *.lst
