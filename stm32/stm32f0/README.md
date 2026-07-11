@@ -1,4 +1,13 @@
-# STM32F030F4P6 Development Board
+# STM32F0 MCU Series
+
+[ST Micro](https://www.st.com/en/microcontrollers-microprocessors/stm32f0-series.html) 32 bit ARM Cortex M0 at 48 Mhz.
+
+* Value Line F0x0
+* Access Line F0x1
+* USB Line F0x2
+* Low Voltage F0x8
+
+## STM32F030F4P6 Development Board
 
 <img src="stm32f0.jpg" width="200">
 
