@@ -1,19 +1,19 @@
 # ST Micro STM32
 
-I have several samples of this architecture including:
-
-* [STM32F030F4P6](stm32f030f4p6)
-* [STM32VLDISCOVERY](stm32vldiscovery)
-* [STM32F103C8T6 Development Boards](stm32f103c8t6)
-
 <img src="STM32FxCxT6-devboard.jpg" width="200">
+
+I have several boards from this family
+
+* [STM32F030F4P6 Minimal Board](stm32f0/stm32f030f4p6)
+* [STM32VLDISCOVERY](stm32f1/stm32vldiscovery)
+* [STM32F103C8T6 Blue Pill](stm32f1/stm32f103c8t6)
 
 # Development Notes
 
-STM32Cube is their configuration and development system that includes:
+STM32Cube is the ST configuration and development system that includes
 
-* STM32CubeMX graphical configuration and code generation tool.
-* Cortex Microcontroller Software Interface Standard (CMSIS) for each family e.g. STM32CubeF1 which provides:
+* STM32CubeMX graphical configuration and code generation tool
+* Cortex Microcontroller Software Interface Standard (CMSIS) for each family e.g. STM32CubeF1 which provides
    * Board Support Package (for devices on ST Dev Boards: displays, etc)
    * STM32 HAL
    * Lower Layer (LL) APIs which provide expert access for certain peripherals
@@ -37,3 +37,5 @@ Programming of the chips is accomplished via an ST-Link adapter and software.
 On Linux the *stlink-tools* package is available.
 
 # References
+
+* [STM32 Arm Cortex MCUs](https://www.st.com/en/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus.html)
