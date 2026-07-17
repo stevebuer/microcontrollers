@@ -1,1 +1,4 @@
 Drivers/*
+*.o
+*.elf
+*.bin
