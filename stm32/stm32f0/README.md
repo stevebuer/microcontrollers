@@ -7,21 +7,13 @@
 * USB Line F0x2
 * Low Voltage F0x8
 
-## STM32F030F4P6 Development Board
-
-<img src="stm32f0.jpg" width="200">
+<img src="stm32f030f4p6.jpg" width="200">
 
 ## Development Notes
 
-Cortex Microcontroller Software Interface Standard (CMSIS) [Github repository](https://github.com/STMicroelectronics/STM32CubeF0).
+[STM32F0 (CMSIS) Github](https://github.com/STMicroelectronics/STM32CubeF0)
 
-## Code
-
-* Bare Metal Blinky
-* USB Device Mode
-* RTOS AX.25 Decoder
-
-### Project Templates
+### Exmaple and Project Templates
 
 * STM32CubeMX
 * SPL
@@ -65,4 +57,5 @@ alias mcc="$CC $CFLAGS"
 
 ## References
 
-* [STM32F000 Datasheet](FIXME)
+* [STM32F030F4 Datasheet](https://www.st.com/resource/en/datasheet/stm32f030f4.pdf)
+* STM32F0
