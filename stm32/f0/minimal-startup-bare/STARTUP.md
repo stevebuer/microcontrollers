@@ -1,4 +1,4 @@
-# 🏁 Startup File Overview (startup_stm32f0xx.s)
+# Startup File Overview (startup_stm32f0xx.s)
 
 The startup file is the very first code that runs after reset. It performs the low‑level steps required before any C code can execute.
 
@@ -33,7 +33,7 @@ Default handlers typically loop forever so unexpected faults are easy to catch d
 
 ---
 
-# 📌 Vector Table in C vs Assembly
+# Vector Table in C vs Assembly
 
 On Cortex‑M microcontrollers, the vector table can be defined in **either**:
 
@@ -44,7 +44,7 @@ Both approaches are valid. The CPU doesn’t care — it just reads a table of a
 
 ---
 
-# 🧭 Why define the vector table in C?
+# Why define the vector table in C?
 
 Defining the vector table in C has a few advantages:
 
@@ -57,7 +57,7 @@ Many hobbyists and even some professional templates prefer this style.
 
 ---
 
-# 🧱 What changes when the vector table is in C?
+# What changes when the vector table is in C?
 
 If you move the vector table into C:
 
@@ -81,7 +81,7 @@ If you move the vector table into C:
 
 ---
 
-# 📄 README‑ready summary (copy/paste)
+# README‑ready summary (copy/paste)
 
 Here’s a clean section you can drop straight into your README:
 

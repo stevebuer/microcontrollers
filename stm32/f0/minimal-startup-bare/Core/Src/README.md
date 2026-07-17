@@ -1,4 +1,4 @@
-# Steve's minimal Cortex M0 startup code
+# Minimal Cortex M0 startup code
 
 ## vector_table.c 
 

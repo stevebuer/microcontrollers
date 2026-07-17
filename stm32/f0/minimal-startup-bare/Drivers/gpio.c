@@ -45,4 +45,3 @@ uint8_t gpio_read(GPIO_t *port, uint8_t pin)
 {
     return (port->IDR >> pin) & 1u;
 }
-

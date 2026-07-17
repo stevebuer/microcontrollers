@@ -1,6 +1,8 @@
-# Steve's Bare Metal Template for F0 based on SPL
+# SPL Template
 
-## Notes
+Bare Metal Template for F0 with SPL
+
+## ASM files
 
 .s raw assembly (no macros, #include, #define, etc.)
 .S assembly with c-preprocessor

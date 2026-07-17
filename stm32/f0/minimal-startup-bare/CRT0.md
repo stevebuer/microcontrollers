@@ -1,4 +1,4 @@
-# 🌱 What “C runtime startup” actually means
+# C runtime setup
 
 Before `main()` can run, the CPU needs a bunch of things set up:
 
@@ -20,7 +20,7 @@ This whole sequence is what people call **crt0** (“C runtime zero”).
 
 ---
 
-# 🧱 The minimal ARM Cortex‑M startup flow
+# The minimal ARM Cortex‑M startup flow
 
 Here’s the conceptual flow, not code yet:
 
@@ -56,11 +56,11 @@ These are addresses the startup code uses to know:
 - where `.data` should go in RAM  
 - where `.bss` starts and ends  
 
-You don’t need to memorize them — the linker script provides them.
+the linker script provides them.
 
 ---
 
-# 🔧 Step 2: Copy `.data` from Flash to RAM
+# Step 2: Copy `.data` from Flash to RAM
 
 In pseudocode:
 
@@ -76,7 +76,7 @@ This ensures global variables with initial values are correct.
 
 ---
 
-# 🧽 Step 3: Zero `.bss`
+# Step 3: Zero `.bss`
 
 ```c
 uint32_t* b = &_sbss;
@@ -88,7 +88,7 @@ This ensures uninitialized globals start at zero, as the C standard requires.
 
 ---
 
-# 🚀 Step 4: Call `main()`
+# Step 4: Call `main()`
 
 ```c
 main();
@@ -98,7 +98,7 @@ After `main()` returns (it shouldn’t), you typically loop forever.
 
 ---
 
-# 🧠 Why this matters
+# Why this matters
 
 C assumes:
 
@@ -108,4 +108,5 @@ C assumes:
 - memory is zeroed where required  
 
 The CPU does **none** of this for you.  
+
 Your startup code does.
