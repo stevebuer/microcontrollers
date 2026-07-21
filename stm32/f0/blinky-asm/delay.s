@@ -17,6 +17,7 @@ delay_short:
  * Delay for r0 iterations.
  *   r0 = loop count
  * --------------------------------------------------------- */
+
 delay_custom:
     cmp r0, #0
     beq 2f
@@ -47,4 +48,3 @@ delay_ms:
 
 3:  pop {r1, r2}
     bx lr
-

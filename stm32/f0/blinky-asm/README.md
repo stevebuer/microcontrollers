@@ -122,3 +122,7 @@ delay2:
 ### ✔ `Makefile`
 - builds startup + main  
 - produces `.elf` and `.bin`  
+
+## Notes
+
+* ldr is a pseudo-instruction

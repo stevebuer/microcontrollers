@@ -10,7 +10,8 @@ OBJCOPY = arm-none-eabi-objcopy
 OBJDUMP = arm-none-eabi-objdump
 
 CPU = -mcpu=cortex-m0 -mthumb
-CFLAGS = $(CPU) -O2 -ffreestanding -nostdlib -Wall
+CFLAGS = $(CPU) -O2 -ffreestanding -nostdlib -Wall -I./CMSIS/Include -I./Device
+
 LDFLAGS = $(CPU) -T linker.ld -nostdlib
 
 OBJ = $(C_SOURCES:.c=.o) $(ASM_SOURCES:.s=.o)

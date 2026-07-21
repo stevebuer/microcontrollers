@@ -9,44 +9,36 @@
     .equ GPIOC_ODR, 0x48000814
 
     .equ RCC_IOPCEN, (1 << 19)
-    .equ GPIO_MODER_OUT, (1 << (8 * 2)) @ MODER8 = 01 (output)
+    .equ GPIO_MODER_OUT, (1 << (8 * 2)) // @ MODER8 = 01 (output)
 
-.global _start
-_start:
+    .global init_gpio
+    .global led_on
+    .global led_off
+
+init_gpio:
 
     /* Enable GPIOC clock */
 
     ldr r0, =RCC_AHBENR
     ldr r1, [r0]
-    orr r1, r1, #RCC_IOPCEN
-    str r1, [r0]
+
+    ldr r2, =RCC_IOPCEN
+    orrs r1, r1, r2
 
     /* Set PC8 as output */
 
     ldr r0, =GPIOC_MODER
     ldr r1, [r0]
-    bic r1, r1, #(3 << (8 * 2))   @ clear MODER8
-    orr r1, r1, #GPIO_MODER_OUT
-    str r1, [r0]
 
-loop:
+    // bic r1, r1, #(3 << (8 * 2))   @ clear MODER8
 
-    /* Toggle PC8 */
+    ldr r2, =(1<<8)
+    eors r1, r1, r2
 
-    ldr r0, =GPIOC_ODR
-    ldr r1, [r0]
-    eor r1, r1, #(1 << 8)
-    str r1, [r0]
+led_on:
 
-    /* Delay */
+	ldr r0, =1
 
-    // movs r2, #0
-    call _delay
-/*
-delay:
-    adds r2, r2, #1
-    cmp r2, #0xFF
-    bne delay
-
-    b loop
-*/
+led_off:
+	
+	ldr r0, =0 

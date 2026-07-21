@@ -1,15 +1,25 @@
-/* atm32f0 blinky main */
+/* stm32f0 blinky main */
 
-    .syntax unified
-    .cpu cortex-m0
-    .thumb
+	.syntax unified
+	.cpu cortex-m0
+	.thumb
 
-    .global main
+	.global main
+
 main:
-	bl setup_gpio
+	bl init_gpio
 
-loop:
-	bl toggle_led
-	movs r0, #100
+loop1:
+	// change this to a toggle?
+
+	bl led_on
+
+	movs r0, #100 @ this register will get overwritten?
 	bl delay_ms
-	b loop
+
+	bl led_off
+	
+	movs r0, #100 @ this register will get overwritten?
+	bl delay_ms
+
+	b loop1

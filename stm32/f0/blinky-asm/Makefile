@@ -1,15 +1,18 @@
 # Toolchain
+
 AS      = arm-none-eabi-as
 LD      = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
 
 # MCU
+
 CPU     = -mcpu=cortex-m0 -mthumb
 
 # Files
+
 TARGET  = blinky
 LINKER  = stm32f030f4.ld
-SRCS    = startup.s main.s
+SRCS    = startup.s delay.s gpio.s main.s
 OBJS    = $(SRCS:.s=.o)
 
 all: $(TARGET).bin
@@ -25,4 +28,3 @@ $(TARGET).bin: $(TARGET).elf
 
 clean:
 	rm -f *.o *.elf *.bin
-
