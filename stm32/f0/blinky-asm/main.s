@@ -1,10 +1,12 @@
-/* stm32f0 blinky main */
+@
+@ stm32f0 blinky main
+@
 
-	.syntax unified
-	.cpu cortex-m0
-	.thumb
+.syntax unified
+.cpu cortex-m0
+.thumb
 
-	.global main
+.global main
 
 main:
 	bl init_gpio
