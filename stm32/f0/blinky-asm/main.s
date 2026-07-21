@@ -10,18 +10,15 @@
 
 main:
 	bl init_gpio
+1:
+	bl led_on @ change to toggle
 
-loop1:
-	// change this to a toggle?
-
-	bl led_on
-
-	movs r0, #100 @ this register will get overwritten?
+	ldr r0, =1000
 	bl delay_ms
 
 	bl led_off
 	
-	movs r0, #100 @ this register will get overwritten?
+	ldr r0, =1000
 	bl delay_ms
 
-	b loop1
+	b 1b
