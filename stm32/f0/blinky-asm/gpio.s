@@ -12,34 +12,64 @@
 .global led_on
 .global led_off
 
+@ Enable Port A bit
+
+.equ RCC_IOPAEN, (1 << 17)
+
+@ Two bit mode register for pin 8 = 01 (output)
+
+.equ GPIOA_PIN4_MASK, (3 << (4 * 2)) 	
+.equ GPIOA_PIN4_OUT, (1 << (4 * 2)) 	
+
 init_gpio:
 
-	@ Enable GPIOC clock
+	@ Enable GPIOA clock bit in RCC AHB
 
 	ldr r0, =RCC_AHBENR
 	ldr r1, [r0]
 
-	ldr r2, =RCC_IOPCEN
+	ldr r2, =RCC_IOPAEN
 	orrs r1, r1, r2
 
-	@ Set PC8 as output
+	str r1, [r0]
 
-	ldr r0, =GPIOC_MODER
+	@ Set MODER = 01 (output)
+
+	ldr r0, =GPIOA_MODER
 	ldr r1, [r0]
 
-	// bic r1, r1, #(3 << (8 * 2))   @ clear MODER8
+	ldr r2, =GPIOA_PIN4_MASK
+	bics r1, r1, r2
 
-	ldr r2, =(1<<8)
+	ldr r2, =GPIOA_PIN4_OUT
 	eors r1, r1, r2
+	
+	str r1, [r0]
 
 	bx lr
 
 led_on:
 
-	ldr r0, =1
+	@ write to BSRR bit 4
+
+	ldr  r0, =GPIOA_BSRR
+
+	movs r1, #1
+	lsls r1, r1, #4
+
+	str  r1, [r0]
+
 	bx lr
 
 led_off:
+
+	@ write to BSRR bit 20
 	
-	ldr r0, =0 
+	ldr  r0, =GPIOA_BSRR
+	
+	movs r1, #1
+	lsls r1, r1, #20
+	
+	str  r1, [r0]
+	
 	bx lr

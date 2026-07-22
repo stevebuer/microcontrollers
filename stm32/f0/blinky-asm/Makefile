@@ -12,7 +12,7 @@ CPU     = -mcpu=cortex-m0 -mthumb
 
 TARGET  = blinky
 LINKER  = stm32f030f4.ld
-SRCS    = startup.s delay.s gpio.s main.s
+SRCS    = startup.s delay.s gpio.s uart.s main.s
 OBJS    = $(SRCS:.s=.o)
 
 all: $(TARGET).bin
