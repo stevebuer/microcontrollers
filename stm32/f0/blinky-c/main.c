@@ -13,7 +13,7 @@ int main(void)
 
 	RCC->AHBENR |= RCC_AHBENR_GPIOCEN;     
 	
-	// PC8 output
+	/* PC8 output */
 	
 	GPIOC->MODER |= (1 << (8 * 2));        
 
@@ -22,5 +22,5 @@ int main(void)
 		GPIOC->ODR ^= (1 << 8);            
 
 		for (volatile int i = 0; i < 50000; i++);
-    }
+	}
 }

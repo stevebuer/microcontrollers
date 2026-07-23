@@ -1,0 +1,39 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/arm-none-eabi-gcc",
+      "-DSTM32F051x8",
+      "-I/home/steve/STM32Cube/Repository/STM32Cube_FW_F0_V1.11.6/Drivers/CMSIS/Device/ST/STM32F0xx/Include",
+      "-I/home/steve/STM32Cube/Repository/STM32Cube_FW_F0_V1.11.6/Drivers/CMSIS/Include",
+      "-I/home/steve/STM32Cube/Repository/STM32Cube_FW_F0_V1.11.6/Drivers/STM32F0xx_HAL_Driver/Inc",
+      "-mcpu=cortex-m0",
+      "-mthumb",
+      "-O2",
+      "-ffreestanding",
+      "-Wall",
+      "-I./CMSIS/Include",
+      "-I./Device",
+      "-c",
+      "-o",
+      "main.o",
+      "main.c"
+    ],
+    "directory": "/home/steve/GITHUB/microcontrollers/stm32/f0/blinky-c",
+    "file": "/home/steve/GITHUB/microcontrollers/stm32/f0/blinky-c/main.c",
+    "output": "/home/steve/GITHUB/microcontrollers/stm32/f0/blinky-c/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/arm-none-eabi-gcc",
+      "-mcpu=cortex-m0",
+      "-mthumb",
+      "-c",
+      "-o",
+      "startup_stm32f051x8.o",
+      "startup_stm32f051x8.s"
+    ],
+    "directory": "/home/steve/GITHUB/microcontrollers/stm32/f0/blinky-c",
+    "file": "/home/steve/GITHUB/microcontrollers/stm32/f0/blinky-c/startup_stm32f051x8.s",
+    "output": "/home/steve/GITHUB/microcontrollers/stm32/f0/blinky-c/startup_stm32f051x8.o"
+  }
+]
