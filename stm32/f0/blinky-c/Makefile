@@ -1,7 +1,12 @@
 PROJECT = c-blinky
 
+include cmsis.mk
+
+MCU=STM32F051x8
+
 C_SOURCES = main.c
-ASM_SOURCES = startup.s
+ASM_SOURCES = startup_stm32f051x8.s
+LINKER_SCRIPT=STM32F051xx_FLASH.ld
 
 CC      = arm-none-eabi-gcc
 AS      = arm-none-eabi-as
@@ -10,9 +15,8 @@ OBJCOPY = arm-none-eabi-objcopy
 OBJDUMP = arm-none-eabi-objdump
 
 CPU = -mcpu=cortex-m0 -mthumb
-CFLAGS = $(CPU) -O2 -ffreestanding -nostdlib -Wall -I./CMSIS/Include -I./Device
-
-LDFLAGS = $(CPU) -T linker.ld -nostdlib
+CFLAGS += $(CPU) -O2 -ffreestanding -nostdlib -Wall -I./CMSIS/Include -I./Device
+LDFLAGS = $(CPU) -T $(LINKER_SCRIPT) -nostdlib
 
 OBJ = $(C_SOURCES:.c=.o) $(ASM_SOURCES:.s=.o)
 
@@ -35,4 +39,3 @@ clean:
 
 dump:
 	$(OBJDUMP) -d $(PROJECT).elf > $(PROJECT).lst
-

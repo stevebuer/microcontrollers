@@ -2,13 +2,20 @@
 
 #include "stm32f0xx.h"
 
+void SystemInit(void) 
+{
+	/* HSI for now */
+}
+
 int main(void) 
 {
 	/* enable GPIOC clock */
 
 	RCC->AHBENR |= RCC_AHBENR_GPIOCEN;     
 	
-	GPIOC->MODER |= (1 << (8 * 2));        // PC8 output
+	// PC8 output
+	
+	GPIOC->MODER |= (1 << (8 * 2));        
 
 	while (1) {
 
