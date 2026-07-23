@@ -4,7 +4,7 @@ include cmsis.mk
 
 MCU=STM32F051x8
 
-C_SOURCES = main.c
+C_SOURCES = gpio.c uart.c main.c
 ASM_SOURCES = startup_stm32f051x8.s
 LINKER_SCRIPT=STM32F051xx_FLASH.ld
 
