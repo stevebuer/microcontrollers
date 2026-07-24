@@ -6,16 +6,20 @@ It has been obsoleted by a newer version and does not seem to be supported in Ci
 
 I would still like to be able to use it as part of my weather station.
 
-### Data Sheet
+## Data Sheet
 
 [Bosch BMP180 Data Sheet](https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf)
 
-### Code
+## Bosch Driver
+
+[bosch](bmp180)
+
+## Python Code
 
 * Makefile - scan the i2c bus
 * bmp180-check.py - Use pyftdi to query the device via FT232H MPSSE
 
-### Other Sources
+## Other Sources
 
 * [Adafruit BMP085 Arduino Library](https://github.com/adafruit/Adafruit-BMP085-Library)
 * [Adafruit BMP085/BMP180 Unified Library](https://github.com/adafruit/Adafruit_BMP085_Unified)
