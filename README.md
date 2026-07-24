@@ -1,7 +1,8 @@
 # Microcontrollers
 
-Information, project templates, and example code for specific microcontrollers and evaluation boards. Also, debug
-interface and flash programming notes.
+Information, project templates, and example code for specific microcontrollers and evaluation boards. 
+
+Also, debug interface and flash programming notes.
 
 ## Microcontrollers
 

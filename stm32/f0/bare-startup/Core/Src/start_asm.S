@@ -1,6 +1,6 @@
-/*
- * m0 crt0 asm
- */
+@
+@ m0 crt0 asm
+@
 
 .syntax unified
 .cpu cortex-m0
@@ -9,11 +9,11 @@
 .global _start
 _start:
 
-	/* copy .data section from Flash (_sidata) to RAM (_sdata) */
+	@ copy .data section from Flash (_sidata) to RAM (_sdata)
 
-	ldr r1, =_sidata     /* source: Flash */
-	ldr r2, =_sdata      /* destination: RAM */
-	ldr r3, =_edata      /* end of .data in RAM */
+	ldr r1, =_sidata     @ source: Flash
+	ldr r2, =_sdata      @ destination: RAM
+	ldr r3, =_edata      @ end of .data in RAM
 
 copy_data:
 	cmp r2, r3
@@ -51,4 +51,4 @@ call_main:
 	bl main
 
 hang:
-	b hang               /* main() should never return */
+	b hang               @ main should never return

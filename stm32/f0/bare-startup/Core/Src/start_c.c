@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 extern void main();
+extern void system_init(void);
 
 void _start(void) 
 {

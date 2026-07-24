@@ -81,12 +81,6 @@ If you move the vector table into C:
 
 ---
 
-# README‑ready summary (copy/paste)
-
-Here’s a clean section you can drop straight into your README:
-
----
-
 ## Vector Table Location (Assembly or C)
 
 The Cortex‑M0 requires a vector table at the beginning of flash. This table contains the initial stack pointer and the addresses of all exception and interrupt handlers.

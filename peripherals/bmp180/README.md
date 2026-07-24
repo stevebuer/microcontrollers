@@ -12,7 +12,11 @@ I would still like to be able to use it as part of my weather station.
 
 ## Bosch Driver
 
-[bosch](bmp180)
+```
+cd bosch ; gcc -c bmp180.c ; gcc -c bmp180_support.c
+```
+
+[bosch](bosch)
 
 ## Python Code
 

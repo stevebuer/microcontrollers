@@ -1,5 +1,9 @@
 /* entry point */
 
+void system_init(void);
+void app_init(void);
+void app_loop(void);
+
 void main()
 {
 	system_init();

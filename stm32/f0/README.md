@@ -58,4 +58,4 @@ alias mcc="$CC $CFLAGS"
 ## References
 
 * [STM32F030F4 Datasheet](https://www.st.com/resource/en/datasheet/stm32f030f4.pdf)
-* STM32F0
+* [RM0360 Programmer's Reference Manual](https://www.st.com/resource/en/reference_manual/dm00091010-stm32f030x4x6x8xc-and-stm32f070x6xb-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)

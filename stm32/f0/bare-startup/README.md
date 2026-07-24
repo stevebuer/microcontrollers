@@ -1,11 +1,13 @@
-# SPL Template
+# STM32F0 CMSIS / LL Template
 
-Bare Metal Template for F0 with SPL
+Template for F0 with CMSIS / LL
 
-## ASM files
+## ASM sources
 
-.s raw assembly (no macros, #include, #define, etc.)
+.s raw assembly
 .S assembly with c-preprocessor
+
+## Directory structure
 
 <pre>
 project/
@@ -24,5 +26,5 @@ project/
 │   ├── main.c
 │   └── your_drivers.c/.h (optional)
 │
-└── Makefile / CMakeLists.txt / project file
+└── Makefile
 </pre>
