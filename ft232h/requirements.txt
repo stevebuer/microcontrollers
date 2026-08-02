@@ -1,0 +1,3 @@
+adafruit-blinka
+adafruit-circuitpython-ht16k33
+circuitpython-bmp180
