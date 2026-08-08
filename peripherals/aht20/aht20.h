@@ -33,7 +33,7 @@ typedef enum {
  * @param len   Number of bytes to write
  * @return 0 on success, nonzero on failure
  */
-typedef int (*aht20_i2c_write_fn)(uint8_t addr, const uint8_t *data, uint16_t len);
+typedef int (*aht20_i2c_write_fn)(void *ctx, uint8_t addr, const uint8_t *data, uint16_t len);
 
 /**
  * @brief I2C read callback.
@@ -42,13 +42,13 @@ typedef int (*aht20_i2c_write_fn)(uint8_t addr, const uint8_t *data, uint16_t le
  * @param len   Number of bytes to read
  * @return 0 on success, nonzero on failure
  */
-typedef int (*aht20_i2c_read_fn)(uint8_t addr, uint8_t *data, uint16_t len);
+typedef int (*aht20_i2c_read_fn)(void *ctx, uint8_t addr, uint8_t *data, uint16_t len);
 
 /**
  * @brief Blocking millisecond delay callback.
  * @param ms    Milliseconds to delay
  */
-typedef void (*aht20_delay_ms_fn)(uint32_t ms);
+typedef void (*aht20_i2c_delay_fn)(uint32_t ms);
 
 /** Set of platform callbacks the driver core uses. Fill this in once per MCU. */
 
@@ -57,10 +57,10 @@ typedef struct {
 	aht20_i2c_write_fn i2c_write;
 	aht20_i2c_read_fn i2c_read;
 	aht20_i2c_delay_fn i2c_delay;
-	void *ctx;
 	bool initialized;
+	void *ctx;
 
-} aht20_handle_t;
+} aht20_ops_t;
 
 /**
  * @brief Initialize the driver instance and the sensor.
@@ -69,26 +69,26 @@ typedef struct {
  * for the sensor to report calibrated. Call once at startup, after the
  * platform I2C peripheral itself is already up and running.
  */
-aht20_status_t aht20_init(const aht20_handle_t *h);
+aht20_status_t aht20_init(aht20_ops_t *ops);
 
 /**
  * @brief Soft-reset the sensor (equivalent to power-on reset).
  *
  * Sensor needs re-initializing (aht20_init) after this returns.
  */
-aht20_status_t aht20_soft_reset(aht20_handle_t *h);
+aht20_status_t aht20_soft_reset(aht20_ops_t *ops);
 
 /** 
  * @brief Read the sensor's calibration-loaded status bit. i
  */
-aht20_status_t aht20_is_calibrated(aht20_handle_t *h, bool *calibrated);
+aht20_status_t aht20_is_calibrated(aht20_ops_t *ops, bool *calibrated);
 
 /**
  * @brief Trigger a measurement and return converted temperature/humidity.
  * @param temperature_c  Output, degrees Celsius. Pass NULL to skip.
  * @param humidity_pct   Output, %RH. Pass NULL to skip.
  */
-aht20_status_t aht20_measure(aht20_handle_t *h, float *temperature_c, float *humidity_pct);
+aht20_status_t aht20_measure(aht20_ops_t *ops, float *temperature_c, float *humidity_pct);
 
 /**
  * @brief Trigger a measurement and return the raw 20-bit ADC counts.
@@ -96,6 +96,6 @@ aht20_status_t aht20_measure(aht20_handle_t *h, float *temperature_c, float *hum
  * Useful if you want to do the fixed-point conversion yourself (e.g. on a
  * part with no FPU) instead of using the float math in aht20_measure().
  */
-aht20_status_t aht20_read_raw(aht20_handle_t *dev, uint32_t *raw_humidity, uint32_t *raw_temperature);
+aht20_status_t aht20_read_raw(aht20_ops_t *ops, uint32_t *raw_humidity, uint32_t *raw_temperature);
 
 #endif /* AHT20_H */
