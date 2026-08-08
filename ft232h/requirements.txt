@@ -1,3 +1,6 @@
 adafruit-blinka
 adafruit-circuitpython-ht16k33
 circuitpython-bmp180
+adafruit-circuitpython-dht
+adafruit-circuitpython-onewire
+adafruit-circuitpython-ds18x20

@@ -372,9 +372,10 @@ void aht20_port_ftdi_close(struct ftdi_context *ftdi)
 
 static void print_usage(const char *prog)
 {
-    printf("Usage: %s [--help] [--probe-only|-p]\n", prog);
+    printf("Usage: %s [--help] [--probe-only|-p] [--json|-j]\n", prog);
     printf("  --help, -h    Show this help text and exit\n");
     printf("  --probe-only, -p  Probe I2C address 0x%02X and exit\n", AHT20_I2C_ADDR);
+    printf("  --json, -j    Emit single-line JSON output\n");
 }
 
 /* Probe by issuing only the write address byte and checking for ACK. */
@@ -386,6 +387,7 @@ static int aht20_probe_address(aht20_ops_t *ops)
 int main(int argc, char **argv)
 {
     bool probe_only = false;
+    bool json_output = false;
 
     for (int i = 1; i < argc; i++) {
         if ((strcmp(argv[i], "--help") == 0) || (strcmp(argv[i], "-h") == 0)) {
@@ -396,9 +398,17 @@ int main(int argc, char **argv)
             probe_only = true;
             continue;
         }
+        if ((strcmp(argv[i], "--json") == 0) || (strcmp(argv[i], "-j") == 0)) {
+            json_output = true;
+            continue;
+        }
 
-        fprintf(stderr, "Unknown option: %s\n", argv[i]);
-        print_usage(argv[0]);
+        if (json_output) {
+            printf("{\"ok\":false,\"stage\":\"args\",\"error\":\"unknown_option\",\"arg\":\"%s\"}\n", argv[i]);
+        } else {
+            fprintf(stderr, "Unknown option: %s\n", argv[i]);
+            print_usage(argv[0]);
+        }
         return 2;
     }
 
@@ -406,25 +416,43 @@ int main(int argc, char **argv)
     struct ftdi_context *ftdi = NULL;
 
     if (aht20_port_ftdi_open(&ops, &ftdi) != 0) {
-        fprintf(stderr, "Failed to open/configure FT232H in MPSSE mode\n");
+        if (json_output) {
+            printf("{\"ok\":false,\"stage\":\"open\",\"error\":\"ftdi_open_failed\"}\n");
+        } else {
+            fprintf(stderr, "Failed to open/configure FT232H in MPSSE mode\n");
+        }
         return 1;
     }
 
     if (aht20_probe_address(&ops) != 0) {
-        fprintf(stderr, "AHT20 probe at 0x%02X: no ACK\n", AHT20_I2C_ADDR);
+        if (json_output) {
+            printf("{\"ok\":false,\"stage\":\"probe\",\"probe_ack\":false,\"address\":\"0x%02X\",\"error\":\"no_ack\"}\n", AHT20_I2C_ADDR);
+        } else {
+            fprintf(stderr, "AHT20 probe at 0x%02X: no ACK\n", AHT20_I2C_ADDR);
+        }
         aht20_port_ftdi_close(ftdi);
         return 1;
     }
 
-    printf("AHT20 probe at 0x%02X: ACK\n", AHT20_I2C_ADDR);
+    if (!json_output) {
+        printf("AHT20 probe at 0x%02X: ACK\n", AHT20_I2C_ADDR);
+    }
+
     if (probe_only) {
+        if (json_output) {
+            printf("{\"ok\":true,\"stage\":\"probe\",\"probe_ack\":true,\"address\":\"0x%02X\"}\n", AHT20_I2C_ADDR);
+        }
         aht20_port_ftdi_close(ftdi);
         return 0;
     }
 
     aht20_status_t rc = aht20_init(&ops);
     if (rc != AHT20_OK) {
-        fprintf(stderr, "aht20_init failed: %d\n", (int)rc);
+        if (json_output) {
+            printf("{\"ok\":false,\"stage\":\"init\",\"probe_ack\":true,\"address\":\"0x%02X\",\"status\":%d}\n", AHT20_I2C_ADDR, (int)rc);
+        } else {
+            fprintf(stderr, "aht20_init failed: %d\n", (int)rc);
+        }
         aht20_port_ftdi_close(ftdi);
         return 1;
     }
@@ -433,12 +461,21 @@ int main(int argc, char **argv)
     float hum_pct = 0.0f;
     rc = aht20_measure(&ops, &temp_c, &hum_pct);
     if (rc != AHT20_OK) {
-        fprintf(stderr, "aht20_measure failed: %d\n", (int)rc);
+        if (json_output) {
+            printf("{\"ok\":false,\"stage\":\"measure\",\"probe_ack\":true,\"address\":\"0x%02X\",\"status\":%d}\n", AHT20_I2C_ADDR, (int)rc);
+        } else {
+            fprintf(stderr, "aht20_measure failed: %d\n", (int)rc);
+        }
         aht20_port_ftdi_close(ftdi);
         return 1;
     }
 
-    printf("AHT20: %.2f C, %.2f %%RH\n", temp_c, hum_pct);
+    if (json_output) {
+        printf("{\"ok\":true,\"stage\":\"measure\",\"probe_ack\":true,\"address\":\"0x%02X\",\"temperature_c\":%.2f,\"humidity_pct\":%.2f}\n", AHT20_I2C_ADDR, temp_c, hum_pct);
+    } else {
+        printf("AHT20: %.2f C, %.2f %%RH\n", temp_c, hum_pct);
+    }
+
     aht20_port_ftdi_close(ftdi);
     return 0;
 }

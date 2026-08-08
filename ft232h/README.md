@@ -4,6 +4,10 @@ My device is an older FT232H with a micro USB connector.
 
 <img src="ft232h.png">
 
+## Board Specs
+
+* I/O pins are 3v cells that are 5v tolerant.
+
 ```
 Bus 002 Device 005: ID 0403:6014 Future Technology Devices International, Ltd FT232H Single HS USB-UART/FIFO IC
 ```
@@ -66,7 +70,7 @@ Todo: Using pyftdi directly, without blinka.
 
 4.7k (Yellow-Violet-Red)
 
-SDA/SCL to 5v
+SDA/SCL to 3.3v
 
 ## GPIO Example
 
