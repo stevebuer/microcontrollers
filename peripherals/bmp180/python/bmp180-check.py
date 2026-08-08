@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # 
 # Check BMP180 device is connected using pyftdi

@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 #
 # Test BMP180 via Adafruit Blinka library
+#
 
-import sys
 import board
 import busio
-from busio import I2C
 
 BMP180_ADDR = 0x77
 ID_REGISTER = 0xD0
@@ -17,7 +16,6 @@ class BMP180():
 
     def __init__(self):
 
-        device = 'test'
         self.i2c = busio.I2C(board.SCL, board.SDA)
 
         if BMP180_ADDR in self.i2c.scan():
