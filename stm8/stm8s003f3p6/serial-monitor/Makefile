@@ -3,7 +3,7 @@
 ###############################################################################
 
 # Name of the final firmware file (without extension)
-TARGET      := firmware
+TARGET      := serialmon
 
 # MCU family (used for include paths and optional flags)
 MCU         := STM8S003
@@ -17,7 +17,7 @@ INC_DIR	    := inc
 SOURCES     := $(wildcard $(SRC_DIR)/*.c)
 
 # SPL source files (you may trim this list to only what you use)
-SPL_MODULE_PATTERNS := stm8s_clk*.c stm8s_gpio*.c stm8s_uart1*.c stm8s_spi*.c
+SPL_MODULE_PATTERNS := stm8s_clk*.c stm8s_gpio*.c stm8s_uart1*.c stm8s_i2c*.c
 SPL_SOURCES := $(foreach p,$(SPL_MODULE_PATTERNS),$(wildcard $(SPL_PATH)/src/$(p)))
 
 # Output directory
