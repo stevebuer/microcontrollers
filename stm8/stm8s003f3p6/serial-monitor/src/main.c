@@ -4,6 +4,7 @@
 
 #include "stm8s_conf.h"
 #include "uart.h"
+#include "cmd.h"
 
 static void i2c_init(void)
 {
@@ -87,9 +88,13 @@ int main(void)
 
 	i2c_init();
 
+	cmd_set_i2c_scan_hook(i2c_scan);
+
+	cmd_init();
+
 	while (1) {
 
-		// i2c_scan();
+		cmd_poll();
 	
 		/* Toggle LED */
 

@@ -34,3 +34,13 @@ void uart_puthex8(unsigned char value)
 	uart_putc(hex[(value >> 4) & 0x0F]);
 	uart_putc(hex[value & 0x0F]);
 }
+
+unsigned char uart_rx_ready(void)
+{
+	return (UART1_GetFlagStatus(UART1_FLAG_RXNE) != RESET);
+}
+
+char uart_getc(void)
+{
+	return (char)UART1_ReceiveData8();
+}
