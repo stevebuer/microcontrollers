@@ -29,6 +29,8 @@ BUILD_DIR   := build
 
 CC          := sdcc
 OBJCOPY     := packihx
+FLASH       := stm8flash
+PROGRAMMER  ?= stlinkv2
 
 CFLAGS      := -mstm8 -D$(MCU) \
                --std-sdcc99 \
@@ -78,6 +80,10 @@ $(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).ihx
 	$(OBJCOPY) $< > $(BUILD_DIR)/$(TARGET).hex
 	hex2bin $(BUILD_DIR)/$(TARGET).hex
 
+# Flash device
+flash: $(BUILD_DIR)/$(TARGET).ihx
+	$(FLASH) -c $(PROGRAMMER) -p stm8s003f3 -s flash -w $<
+
 ###############################################################################
 # Cleaning
 ###############################################################################
@@ -85,4 +91,4 @@ $(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).ihx
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all clean check-spl
+.PHONY: all clean check-spl flash
