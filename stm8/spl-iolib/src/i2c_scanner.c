@@ -29,7 +29,7 @@ uint8_t i2c_probe(uint8_t addr)
 
     	while (!I2C_CheckEvent(I2C_EVENT_MASTER_MODE_SELECT));
 
-    	I2C_Send7bitAddress(addr << 1, I2C_DIRECTION_TRANSMITTER);
+		I2C_Send7bitAddress(addr << 1, I2C_DIRECTION_TX);
 
     	/* If ACK received → device exists */
 

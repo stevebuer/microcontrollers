@@ -8,11 +8,11 @@ volatile uint32_t systick_ms = 0;
 
 void systick_init(void)
 {
-    TIM4_PSCR = 0x07;      	/* Prescaler = 128 */
-    TIM4_ARR  = 124;       	/* 1ms period */
-    TIM4_CNTR = 0;         	/* Reset counter */
-    TIM4_IER |= TIM4_IER_UIE; 	/* Enable update interrupt */
-    TIM4_CR1 |= TIM4_CR1_CEN; 	/* Start timer */
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER4, ENABLE);
+    TIM4_TimeBaseInit(TIM4_PRESCALER_128, 124);
+    TIM4_ClearFlag(TIM4_FLAG_UPDATE);
+    TIM4_ITConfig(TIM4_IT_UPDATE, ENABLE);
+    TIM4_Cmd(ENABLE);
 }
 
 void systick_delay(uint32_t ms)
@@ -33,9 +33,9 @@ uint32_t systick_get(void)
     return t;
 }
 
-@far @interrupt void TIM4_UPD_OVF_IRQHandler(void)
+INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 {
-    TIM4_SR &= ~TIM4_SR_UIF; 	/* Clear interrupt flag */
+    TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
     systick_ms++;
 }
 
