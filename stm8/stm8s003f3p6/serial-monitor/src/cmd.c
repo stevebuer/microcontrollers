@@ -25,6 +25,7 @@ static void usage(void)
 	uart_puts("  i            scan i2c bus\r\n");
 	uart_puts("  r <a> <r>    i2c read reg (hex bytes)\r\n");
 	uart_puts("  w <a> <r> <v> i2c write reg (hex bytes)\r\n");
+	uart_puts("  e <addr> <v> write byte to stm8 data EEPROM\r\n");
 	uart_puts("  ow ...       dallas 1-wire placeholders\r\n");
 }
 
@@ -172,6 +173,28 @@ static void exec_line(char* line)
 		} else {
 			uart_puts("ERR: i2c no-ack\r\n");
 		}
+		return;
+	}
+
+	if (cmd[0] == 'e' && cmd[1] == '\0') {
+		a1 = next_field(&args);
+		a2 = next_field(&args);
+		if (!a1 || !a2 || !parse_hex(a1, &a) || !parse_hex(a2, &v)) {
+			uart_puts("ERR: usage e <addr> <val>\r\n");
+			return;
+		}
+		if (a < 0x4000 || a > 0x43FF) {
+			uart_puts("ERR: eeprom addr out of range [0x4000..0x43FF]\r\n");
+			return;
+		}
+		FLASH_Unlock(FLASH_MEMTYPE_DATA);
+		FLASH_ProgramByte((uint32_t)a, (uint8_t)v);
+		FLASH_Lock(FLASH_MEMTYPE_DATA);
+		if (FLASH_ReadByte((uint32_t)a) != (uint8_t)v) {
+			uart_puts("ERR: eeprom verify failed\r\n");
+			return;
+		}
+		uart_puts("ok\r\n");
 		return;
 	}
 

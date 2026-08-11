@@ -12,6 +12,7 @@ All numeric values for I2C commands are hexadecimal bytes without `0x`.
 | `i` | Scan I2C bus (`0x01`..`0x7E`) |
 | `r <addr> <reg>` | Read one byte from I2C register |
 | `w <addr> <reg> <val>` | Write one byte to I2C register |
+| `e <addr> <val>` | Write one byte to STM8 data EEPROM |
 | `ow ...` | Dallas 1-Wire placeholder command group |
 
 ## I2C Command Notes
