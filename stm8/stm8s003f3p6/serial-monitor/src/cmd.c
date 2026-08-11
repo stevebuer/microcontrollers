@@ -4,42 +4,13 @@
 #include "onewire.h"
 
 #define CMD_MAXLINE 32
-#define USER_STACK_SIZE 8
 
 static char linebuf[CMD_MAXLINE];
 static unsigned char line_len = 0;
 static const char *prompt = "cmd> ";
-static int16_t ustack[USER_STACK_SIZE];
-static int8_t usp = 0;
 static void (*i2c_scan_hook)(void) = 0;
 static unsigned char (*i2c_read_reg_hook)(unsigned char, unsigned char, unsigned char*) = 0;
 static unsigned char (*i2c_write_reg_hook)(unsigned char, unsigned char, unsigned char) = 0;
-
-static void ustack_push(int16_t n)
-{
-	if (usp >= USER_STACK_SIZE) {
-		uart_puts("ERR: stack full\r\n");
-		return;
-	}
-	ustack[usp++] = n;
-}
-
-static int16_t ustack_pop(unsigned char* ok)
-{
-	if (usp <= 0) {
-		*ok = 0;
-		uart_puts("ERR: stack empty\r\n");
-		return 0;
-	}
-	*ok = 1;
-	usp--;
-	return ustack[usp];
-}
-
-static void ustack_clr(void)
-{
-	usp = 0;
-}
 
 static void uart_puthex16(uint16_t value)
 {
@@ -55,11 +26,6 @@ static void usage(void)
 	uart_puts("  r <a> <r>    i2c read reg (hex bytes)\r\n");
 	uart_puts("  w <a> <r> <v> i2c write reg (hex bytes)\r\n");
 	uart_puts("  ow ...       dallas 1-wire placeholders\r\n");
-	uart_puts("  c            clear stack\r\n");
-	uart_puts("  s            show stack\r\n");
-	uart_puts("  +            add top two (n n -- n)\r\n");
-	uart_puts("  d <n>        push decimal number\r\n");
-	uart_puts("  x <hex>      push hex number (no 0x)\r\n");
 }
 
 static char* next_field(char** p)
@@ -89,23 +55,6 @@ static char* next_field(char** p)
 	return start;
 }
 
-static unsigned char parse_dec(const char* s, int16_t* out)
-{
-	int16_t n = 0;
-	if (*s == '\0') {
-		return 0;
-	}
-	while (*s) {
-		if (*s < '0' || *s > '9') {
-			return 0;
-		}
-		n = (int16_t)(n * 10 + (*s - '0'));
-		s++;
-	}
-	*out = n;
-	return 1;
-}
-
 static unsigned char parse_hex(const char* s, int16_t* out)
 {
 	int16_t n = 0;
@@ -127,20 +76,6 @@ static unsigned char parse_hex(const char* s, int16_t* out)
 	}
 	*out = n;
 	return 1;
-}
-
-static void print_stack(void)
-{
-	int8_t i;
-	uart_puts("stack(");
-	uart_puthex8((unsigned char)usp);
-	uart_puts("): ");
-	for (i = 0; i < usp; i++) {
-		uart_puts("0x");
-		uart_puthex16((uint16_t)ustack[i]);
-		uart_putc(' ');
-	}
-	uart_puts("\r\n");
 }
 
 static void exec_line(char* line)
@@ -245,51 +180,6 @@ static void exec_line(char* line)
 		return;
 	}
 
-	if (cmd[0] == 'c' && cmd[1] == '\0') {
-		ustack_clr();
-		uart_puts("ok\r\n");
-		return;
-	}
-
-	if (cmd[0] == 's' && cmd[1] == '\0') {
-		print_stack();
-		return;
-	}
-
-	if (cmd[0] == '+' && cmd[1] == '\0') {
-		int16_t n1 = ustack_pop(&ok);
-		int16_t n2;
-		if (!ok) {
-			return;
-		}
-		n2 = ustack_pop(&ok);
-		if (!ok) {
-			ustack_push(n1);
-			return;
-		}
-		ustack_push((int16_t)(n1 + n2));
-		print_stack();
-		return;
-	}
-
-	if (cmd[0] == 'd' && cmd[1] == '\0') {
-		if (!args || !parse_dec(args, &n)) {
-			uart_puts("ERR: usage d <number>\r\n");
-			return;
-		}
-		ustack_push(n);
-		return;
-	}
-
-	if (cmd[0] == 'x' && cmd[1] == '\0') {
-		if (!args || !parse_hex(args, &n)) {
-			uart_puts("ERR: usage x <hex>\r\n");
-			return;
-		}
-		ustack_push(n);
-		return;
-	}
-
 	uart_puts("ERR: unknown command\r\n");
 }
 
@@ -308,7 +198,6 @@ void cmd_set_i2c_rw_hooks(unsigned char (*read_reg_fn)(unsigned char addr, unsig
 void cmd_init(void)
 {
 	line_len = 0;
-	ustack_clr();
 	uart_puts("\r\n");
 	usage();
 	uart_puts(prompt);

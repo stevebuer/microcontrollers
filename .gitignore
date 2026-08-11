@@ -11,3 +11,5 @@
 *.omf
 *.hex
 *.o
+# Python
+.venv/*
