@@ -40,10 +40,8 @@ int main(void)
 	startup_led_blink();
 
 	i2c_bus_init();
-	onewire_init();
 
-	cmd_set_i2c_scan_hook(i2c_bus_scan);
-	cmd_set_i2c_rw_hooks(i2c_bus_read_reg, i2c_bus_write_reg);
+	onewire_init();
 
 	cmd_init();
 
@@ -51,7 +49,6 @@ int main(void)
 
 		cmd_poll();
 
-		for (volatile uint32_t i = 0; i < 200000; i++) {
-		}
+		for (volatile uint32_t i = 0; i < 200000; i++);
     	}
 }

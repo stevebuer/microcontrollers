@@ -1,16 +1,18 @@
+/* 
+ * command interpreter 
+ */
+
 #include "stm8s_conf.h"
 #include "uart.h"
 #include "cmd.h"
 #include "onewire.h"
+#include "i2c_bus.h"
 
 #define CMD_MAXLINE 32
 
 static char linebuf[CMD_MAXLINE];
 static unsigned char line_len = 0;
 static const char *prompt = "cmd> ";
-static void (*i2c_scan_hook)(void) = 0;
-static unsigned char (*i2c_read_reg_hook)(unsigned char, unsigned char, unsigned char*) = 0;
-static unsigned char (*i2c_write_reg_hook)(unsigned char, unsigned char, unsigned char) = 0;
 
 static void uart_puthex16(uint16_t value)
 {
@@ -29,14 +31,13 @@ static void usage(void)
 	uart_puts("  ow ...       dallas 1-wire placeholders\r\n");
 }
 
-static char* next_field(char** p)
+static char *next_field(char** p)
 {
-	char* s = *p;
-	char* start;
+	char *s = *p;
+	char *start;
 
-	while (*s == ' ') {
+	while (*s == ' ')
 		s++;
-	}
 
 	if (*s == '\0') {
 		*p = s;
@@ -44,210 +45,202 @@ static char* next_field(char** p)
 	}
 
 	start = s;
-	while (*s && *s != ' ') {
-		s++;
-	}
 
-	if (*s) {
+	while (*s && *s != ' ')
+		s++;
+
+	if (*s)
 		*s++ = '\0';
-	}
 
 	*p = s;
+
 	return start;
 }
 
-static unsigned char parse_hex(const char* s, int16_t* out)
+static unsigned char parse_hex(const char *s, int16_t *out)
 {
-	int16_t n = 0;
 	char c;
-	if (*s == '\0') {
+	int16_t n = 0;
+
+	if (*s == '\0')
 		return 0;
-	}
+
 	while ((c = *s++) != '\0') {
+
 		n <<= 4;
-		if (c >= '0' && c <= '9') {
+
+		if (c >= '0' && c <= '9')
 			n |= (int16_t)(c - '0');
-		} else if (c >= 'a' && c <= 'f') {
+		else if (c >= 'a' && c <= 'f')
 			n |= (int16_t)(c - 'a' + 10);
-		} else if (c >= 'A' && c <= 'F') {
+		else if (c >= 'A' && c <= 'F')
 			n |= (int16_t)(c - 'A' + 10);
-		} else {
+		else
 			return 0;
-		}
 	}
+	 
 	*out = n;
+
 	return 1;
 }
 
 static void exec_line(char* line)
 {
-	char* cmd = line;
-	char* args = 0;
-	char* a1;
-	char* a2;
-	char* a3;
-	int16_t n = 0;
-	unsigned char ok = 0;
-	int16_t a = 0;
-	int16_t r = 0;
-	int16_t v = 0;
-	unsigned char rv = 0;
+	char *args = 0, *a1, *a2, *a3, *cmd = line;
+	unsigned char ok = 0, rv = 0;
+	int16_t a = 0, r = 0, v = 0, n = 0;
 
-	while (*cmd == ' ') {
+	while (*cmd == ' ')
 		cmd++;
-	}
-	if (*cmd == '\0') {
+
+	if (*cmd == '\0')
 		return;
-	}
 
 	args = cmd;
-	while (*args && *args != ' ') {
+
+	while (*args && *args != ' ')
 		args++;
-	}
+
 	if (*args) {
+
 		*args++ = '\0';
-		while (*args == ' ') {
+
+		while (*args == ' ')
 			args++;
-		}
 	}
 
-	if (cmd[0] == 'h' || cmd[0] == '?') {
-		usage();
-		return;
-	}
+	if (cmd[0] == 'h' || cmd[0] == '?')
+		return usage();
 
-	if (cmd[0] == 'i' && cmd[1] == '\0') {
-		if (i2c_scan_hook) {
-			i2c_scan_hook();
-		} else {
-			uart_puts("ERR: no i2c scan hook\r\n");
-		}
-		return;
-	}
+	if (cmd[0] == 'i' && cmd[1] == '\0')
+		return i2c_bus_scan();
 
 	if (cmd[0] == 'r' && cmd[1] == '\0') {
-		a1 = next_field(&args);
-		a2 = next_field(&args);
-		if (!a1 || !a2 || !parse_hex(a1, &a) || !parse_hex(a2, &r)) {
-			uart_puts("ERR: usage r <addr> <reg>\r\n");
-			return;
-		}
 
-		if (!i2c_read_reg_hook) {
-			uart_puts("ERR: no i2c read hook\r\n");
-			return;
-		}
+		a1 = next_field(&args); a2 = next_field(&args);
 
-		rv = i2c_read_reg_hook((unsigned char)a, (unsigned char)r, (unsigned char*)&v);
+		if (!a1 || !a2 || !parse_hex(a1, &a) || !parse_hex(a2, &r))
+			return uart_puts("ERR: usage r <addr> <reg>\r\n");
+
+		rv = i2c_bus_read_reg((unsigned char)a, (unsigned char)r, (unsigned char*)&v);
+
 		if (rv == 1) {
+
 			uart_puts("  0x");
 			uart_puthex8((unsigned char)v);
 			uart_puts("\r\n");
-		} else if (rv == 2) {
+
+		} else if (rv == 2)
 			uart_puts("ERR: i2c timeout\r\n");
-		} else {
+		else 
 			uart_puts("ERR: i2c no-ack\r\n");
-		}
+		
 		return;
 	}
 
 	if (cmd[0] == 'w' && cmd[1] == '\0') {
-		a1 = next_field(&args);
-		a2 = next_field(&args);
-		a3 = next_field(&args);
-		if (!a1 || !a2 || !a3 || !parse_hex(a1, &a) || !parse_hex(a2, &r) || !parse_hex(a3, &v)) {
-			uart_puts("ERR: usage w <addr> <reg> <val>\r\n");
-			return;
-		}
 
-		if (!i2c_write_reg_hook) {
-			uart_puts("ERR: no i2c write hook\r\n");
-			return;
-		}
+		a1 = next_field(&args); a2 = next_field(&args); a3 = next_field(&args);
 
-		rv = i2c_write_reg_hook((unsigned char)a, (unsigned char)r, (unsigned char)v);
-		if (rv == 1) {
+		if (!a1 || !a2 || !a3 || !parse_hex(a1, &a) || !parse_hex(a2, &r) || !parse_hex(a3, &v))
+			return uart_puts("ERR: usage w <addr> <reg> <val>\r\n");
+
+		rv = i2c_bus_write_reg((unsigned char) a, (unsigned char) r, (unsigned char) v);
+
+		if (rv == 1)
 			uart_puts("ok\r\n");
-		} else if (rv == 2) {
+		else if (rv == 2)
 			uart_puts("ERR: i2c timeout\r\n");
-		} else {
+		else 
 			uart_puts("ERR: i2c no-ack\r\n");
-		}
+		
 		return;
 	}
 
 	if (cmd[0] == 'e' && cmd[1] == '\0') {
-		a1 = next_field(&args);
-		a2 = next_field(&args);
-		if (!a1 || !a2 || !parse_hex(a1, &a) || !parse_hex(a2, &v)) {
-			uart_puts("ERR: usage e <addr> <val>\r\n");
-			return;
-		}
-		if (a < 0x4000 || a > 0x43FF) {
-			uart_puts("ERR: eeprom addr out of range [0x4000..0x43FF]\r\n");
-			return;
-		}
+
+		a1 = next_field(&args); a2 = next_field(&args);
+
+		if (!a1 || !a2 || !parse_hex(a1, &a) || !parse_hex(a2, &v))
+			return uart_puts("ERR: usage e <addr> <val>\r\n");
+
+		if (a < 0x4000 || a > 0x43FF)
+			return uart_puts("ERR: eeprom addr out of range [0x4000..0x43FF]\r\n");
+
 		FLASH_Unlock(FLASH_MEMTYPE_DATA);
 		FLASH_ProgramByte((uint32_t)a, (uint8_t)v);
 		FLASH_Lock(FLASH_MEMTYPE_DATA);
-		if (FLASH_ReadByte((uint32_t)a) != (uint8_t)v) {
-			uart_puts("ERR: eeprom verify failed\r\n");
-			return;
-		}
+
+		if (FLASH_ReadByte((uint32_t) a) != (uint8_t) v)
+			return uart_puts("ERR: eeprom verify failed\r\n");
+
 		uart_puts("ok\r\n");
 		return;
 	}
 
-	if (cmd[0] == 'o' && cmd[1] == 'w' && cmd[2] == '\0') {
-		onewire_handle_command(args);
-		return;
-	}
+	if (cmd[0] == 'o' && cmd[1] == 'w' && cmd[2] == '\0')
+		return onewire_handle_command(args);
 
 	uart_puts("ERR: unknown command\r\n");
-}
-
-void cmd_set_i2c_scan_hook(void (*scan_fn)(void))
-{
-	i2c_scan_hook = scan_fn;
-}
-
-void cmd_set_i2c_rw_hooks(unsigned char (*read_reg_fn)(unsigned char addr, unsigned char reg, unsigned char* value),
-	unsigned char (*write_reg_fn)(unsigned char addr, unsigned char reg, unsigned char value))
-{
-	i2c_read_reg_hook = read_reg_fn;
-	i2c_write_reg_hook = write_reg_fn;
 }
 
 void cmd_init(void)
 {
 	line_len = 0;
+
 	uart_puts("\r\n");
+
 	usage();
+
 	uart_puts(prompt);
 }
 
 void cmd_poll(void)
 {
 	char c;
+
 	while (uart_rx_ready()) {
+
 		c = uart_getc();
+
+		/* newline */
+
 		if (c == '\r' || c == '\n') {
+
 			uart_puts("\r\n");
+
 			linebuf[line_len] = '\0';
+
+			/* execute */
+
 			exec_line(linebuf);
+
+			/* next prompt */
+
 			line_len = 0;
+
 			uart_puts(prompt);
+
 			continue;
 		}
+
+		/* backspace */
 
 		if ((c == '\b' || c == 127) && line_len > 0) {
+
 			line_len--;
+
 			uart_puts("\b \b");
+
 			continue;
 		}
 
+		/* regular character */
+
 		if (line_len < (CMD_MAXLINE - 1)) {
+
 			linebuf[line_len++] = c;
+
 			uart_putc(c);
 		}
 	}
