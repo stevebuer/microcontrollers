@@ -1,72 +1,36 @@
 # AHT20 Driver
 
 A small, portable C driver for the AHT20 I2C temperature/humidity sensor.
-The core (`aht20.c` / `aht20.h`) has **no MCU-specific code** — it talks to
-the sensor entirely through three function pointers you provide (I2C write,
-I2C read, millisecond delay). This means the same driver core runs unmodified
-on STM8S, STM32, AVR, or even your desktop for testing; only a thin ~30-line
-"port" file changes per platform.
+The core (`aht20.c` / `aht20.h`) interface the sensor through three function 
+pointers (I2C write, I2C read, millisecond delay).
 
 ## Layout
 
 ```
 microcontrollers/peripheral/aht20/
-├── aht20.h                    # Public API + platform callback types
-├── aht20.c                    # Protocol, CRC8, unit conversion — MCU-agnostic
+├── aht20.h                     # Public API + platform callback types
+├── aht20.c                     # Protocol, CRC8, unit conversion — MCU-agnostic
 ├── ports/
-│   ├── aht20_port_stm32.c     # Example port using STM32Cube HAL
-│   └── aht20_port_stm8s.c     # Example port using the STM8S SPL I2C driver
+│   ├── aht20_port_ftdi_mpsse.c # Linux host with FT232H
+│   ├── aht20_port_stm32.c      # Port using STM32Cube HAL
+│   └── aht20_port_stm8s.c      # Port using the STM8S SPL I2C driver
 └── tests/
-    └── test_aht20.c           # Host-side unit tests with a mocked I2C bus
+    └── test_aht20.c            # Host-side unit tests with a mocked I2C bus
 ```
 
 ## Design
 
-The driver takes a `aht20_platform_t` of callbacks:
+The driver takes an `aht20_ops_t` of callbacks specific to the MCU:
 
 ```c
 typedef struct {
     aht20_i2c_write_fn i2c_write;
     aht20_i2c_read_fn  i2c_read;
-    aht20_delay_ms_fn  delay_ms;
-    void *ctx; /* your I2C handle/instance, passed back to each callback */
-} aht20_platform_t;
+    aht20_delay_ms_fn  i2c_delay;
+    bool initialized;
+    void *ctx;                      /* device specific context storage */
+} aht20_ops_t;
 ```
-
-You fill this in once per platform (see `ports/`), then the rest of your
-application code — init, trigger measurement, read, convert — is identical
-regardless of which chip it's running on.
-
-## Usage (STM32 example)
-
-```c
-#include "aht20.h"
-
-extern I2C_HandleTypeDef hi2c1; /* configured elsewhere, e.g. via CubeMX */
-aht20_platform_t aht20_port_stm32_create(I2C_HandleTypeDef *hi2c); /* from ports/aht20_port_stm32.c */
-
-aht20_t sensor;
-
-void app_init(void)
-{
-    aht20_platform_t plat = aht20_port_stm32_create(&hi2c1);
-    if (aht20_init(&sensor, &plat) != AHT20_OK) {
-        /* handle: sensor not present, not calibrated, bus error, etc */
-    }
-}
-
-void app_loop(void)
-{
-    float temp_c, hum_pct;
-    if (aht20_measure(&sensor, &temp_c, &hum_pct) == AHT20_OK) {
-        /* use temp_c / hum_pct */
-    }
-}
-```
-
-Swap `aht20_port_stm32_create` for `aht20_port_stm8s_create` (from
-`ports/aht20_port_stm8s.c`) to run the exact same `app_init`/`app_loop` on
-STM8S — that's the point of the split.
 
 ## API
 

@@ -3,10 +3,10 @@
  * @brief   AHT20 platform port for STM8S using the STM8S Standard
  *          Peripheral Library (SPL) I2C driver.
  *
- * Assumes I2C1 has already  been configured and enabled 
- * elsewhere (I2C_Init / I2C_Cmd(ENABLE)) and that
- * you're using a software millisecond tick (e.g. a TIM4 1ms interrupt
- * incrementing a counter) for delay_ms -- swap `stm8s_delay_ms` for systick.
+ * Assumes:
+ * 
+ *   1. I2C1 has already been configured and enabled 
+ *   2. Software millisecond tick for delay_ms -- swap `stm8s_delay_ms` for systick.
  */
 
 #include "aht20.h"
@@ -16,7 +16,7 @@
 
 #define AHT20_I2C_TIMEOUT_LOOPS 20000u 
 
-/* global systicki: fixme not atomic on stm8 */
+/* global systick: fixme not atomic on stm8 */
 
 extern volatile uint32_t g_ms_ticks;
 
