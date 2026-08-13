@@ -3,14 +3,18 @@
 #include "uart.h"
 
 #define ONEWIRE_PORT GPIOD
-#define ONEWIRE_PIN GPIO_PIN_0
+#define ONEWIRE_PIN GPIO_PIN_2
 
 static void ow_delay_us(unsigned int us)
 {
-	volatile unsigned int i;
-	volatile unsigned int n = us * 16U;
-	for (i = 0; i < n; i++) {
-		__asm__("nop");
+	uint8_t chunk;
+
+	while (us) {
+		chunk = us > 250U ? 250U : (uint8_t)us;
+		TIM4->CNTR = 0;
+		while (TIM4->CNTR < chunk) {
+		}
+		us -= chunk;
 	}
 }
 
@@ -76,12 +80,12 @@ static unsigned char ow_reset(void)
 	ow_drive_low();
 	ow_delay_us(480);
 	ow_drive_high();
-	ow_delay_us(15);
+	ow_delay_us(70);
 	if (GPIO_ReadInputPin(ONEWIRE_PORT, ONEWIRE_PIN) == RESET) {
-		ow_delay_us(460);
+		ow_delay_us(410);
 		return 1;
 	}
-	ow_delay_us(460);
+	ow_delay_us(410);
 	return 0;
 }
 
@@ -93,6 +97,12 @@ static void ow_print_hex_byte(unsigned char value)
 
 void onewire_init(void)
 {
+	CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER4, ENABLE);
+	TIM4->PSCR = 4;
+	TIM4->ARR = 0xFF;
+	TIM4->CNTR = 0;
+	TIM4->CR1 = TIM4_CR1_CEN;
+
 	GPIO_Init(ONEWIRE_PORT, ONEWIRE_PIN, GPIO_MODE_OUT_OD_HIZ_FAST);
 	GPIO_ExternalPullUpConfig(ONEWIRE_PORT, ONEWIRE_PIN, ENABLE);
 	ow_drive_high();

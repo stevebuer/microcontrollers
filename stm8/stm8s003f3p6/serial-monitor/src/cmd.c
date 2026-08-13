@@ -23,12 +23,13 @@ static void uart_puthex16(uint16_t value)
 static void usage(void)
 {
 	uart_puts("micro-mon: v0.3\r\n");
-	uart_puts("  h|?          help\r\n");
-	uart_puts("  i            scan i2c bus\r\n");
-	uart_puts("  r <a> <r>    i2c read reg (hex bytes)\r\n");
+	uart_puts("  h|?           help\r\n");
+	uart_puts("  i             scan i2c bus\r\n");
+	uart_puts("  b             test BMP180 chip ID\r\n");
+	uart_puts("  r <a> <r>     i2c read reg (hex bytes)\r\n");
 	uart_puts("  w <a> <r> <v> i2c write reg (hex bytes)\r\n");
-	uart_puts("  e <addr> <v> write byte to stm8 data EEPROM\r\n");
-	uart_puts("  ow ...       dallas 1-wire placeholders\r\n");
+	uart_puts("  e <addr> <v>  write byte to stm8 data EEPROM\r\n");
+	uart_puts("  ow ...        dallas 1-wire commands\r\n");
 }
 
 static char *next_field(char** p)
@@ -87,7 +88,7 @@ static unsigned char parse_hex(const char *s, int16_t *out)
 static void exec_line(char* line)
 {
 	char *args = 0, *a1, *a2, *a3, *cmd = line;
-	unsigned char ok = 0, rv = 0;
+	unsigned char i2c_value = 0, ok = 0, rv = 0;
 	int16_t a = 0, r = 0, v = 0, n = 0;
 
 	while (*cmd == ' ')
@@ -115,6 +116,25 @@ static void exec_line(char* line)
 	if (cmd[0] == 'i' && cmd[1] == '\0')
 		return i2c_bus_scan();
 
+	if (cmd[0] == 'b' && cmd[1] == '\0') {
+
+		rv = i2c_bus_read_reg(0x77, 0xD0, &i2c_value);
+
+		if (rv == I2C_PROBE_FOUND && i2c_value == 0x55)
+			return uart_puts("BMP180: PASS\r\n");
+
+		if (rv == I2C_PROBE_TIMEOUT)
+			return uart_puts("BMP180: FAIL (i2c timeout)\r\n");
+
+		if (rv == I2C_PROBE_NONE)
+			return uart_puts("BMP180: FAIL (no-ack)\r\n");
+
+		uart_puts("BMP180: FAIL (chip ID 0x");
+		uart_puthex8(i2c_value);
+		uart_puts(")\r\n");
+		return;
+	}
+
 	if (cmd[0] == 'r' && cmd[1] == '\0') {
 
 		a1 = next_field(&args); a2 = next_field(&args);
@@ -122,12 +142,12 @@ static void exec_line(char* line)
 		if (!a1 || !a2 || !parse_hex(a1, &a) || !parse_hex(a2, &r))
 			return uart_puts("ERR: usage r <addr> <reg>\r\n");
 
-		rv = i2c_bus_read_reg((unsigned char)a, (unsigned char)r, (unsigned char*)&v);
+		rv = i2c_bus_read_reg((unsigned char)a, (unsigned char)r, &i2c_value);
 
 		if (rv == 1) {
 
 			uart_puts("  0x");
-			uart_puthex8((unsigned char)v);
+			uart_puthex8(i2c_value);
 			uart_puts("\r\n");
 
 		} else if (rv == 2)

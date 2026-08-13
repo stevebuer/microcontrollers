@@ -30,6 +30,23 @@ static uint8_t i2c_wait_event(uint16_t event)
 	return 1;
 }
 
+static uint8_t i2c_wait_byte_transmitted(void)
+{
+	uint16_t t = I2C_WAIT_TIMEOUT;
+
+	while (t--) {
+		if (I2C_CheckEvent(I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+			return I2C_PROBE_FOUND;
+
+		if (I2C_GetFlagStatus(I2C_FLAG_ACKNOWLEDGEFAILURE)) {
+			I2C_ClearFlag(I2C_FLAG_ACKNOWLEDGEFAILURE);
+			return I2C_PROBE_NONE;
+		}
+	}
+
+	return I2C_PROBE_TIMEOUT;
+}
+
 static uint8_t i2c_probe(uint8_t addr)
 {
 	uint16_t t;
@@ -86,6 +103,8 @@ void i2c_bus_init(void)
 
 unsigned char i2c_bus_write_reg(unsigned char addr, unsigned char reg, unsigned char value)
 {
+	uint8_t result;
+
 	if (!i2c_wait_flag_clear(I2C_FLAG_BUSBUSY)) {
 		I2C_SoftwareResetCmd(ENABLE);
 		I2C_SoftwareResetCmd(DISABLE);
@@ -110,15 +129,17 @@ unsigned char i2c_bus_write_reg(unsigned char addr, unsigned char reg, unsigned 
 	}
 
 	I2C_SendData(reg);
-	if (!i2c_wait_event(I2C_EVENT_MASTER_BYTE_TRANSMITTED)) {
+	result = i2c_wait_byte_transmitted();
+	if (result != I2C_PROBE_FOUND) {
 		I2C_GenerateSTOP(ENABLE);
-		return I2C_PROBE_TIMEOUT;
+		return result;
 	}
 
 	I2C_SendData(value);
-	if (!i2c_wait_event(I2C_EVENT_MASTER_BYTE_TRANSMITTED)) {
+	result = i2c_wait_byte_transmitted();
+	if (result != I2C_PROBE_FOUND) {
 		I2C_GenerateSTOP(ENABLE);
-		return I2C_PROBE_TIMEOUT;
+		return result;
 	}
 
 	I2C_GenerateSTOP(ENABLE);
@@ -127,6 +148,8 @@ unsigned char i2c_bus_write_reg(unsigned char addr, unsigned char reg, unsigned 
 
 unsigned char i2c_bus_read_reg(unsigned char addr, unsigned char reg, unsigned char* value)
 {
+	uint8_t result;
+
 	if (!i2c_wait_flag_clear(I2C_FLAG_BUSBUSY)) {
 		I2C_SoftwareResetCmd(ENABLE);
 		I2C_SoftwareResetCmd(DISABLE);
@@ -151,9 +174,10 @@ unsigned char i2c_bus_read_reg(unsigned char addr, unsigned char reg, unsigned c
 	}
 
 	I2C_SendData(reg);
-	if (!i2c_wait_event(I2C_EVENT_MASTER_BYTE_TRANSMITTED)) {
+	result = i2c_wait_byte_transmitted();
+	if (result != I2C_PROBE_FOUND) {
 		I2C_GenerateSTOP(ENABLE);
-		return I2C_PROBE_TIMEOUT;
+		return result;
 	}
 
 	I2C_GenerateSTART(ENABLE);
@@ -173,13 +197,15 @@ unsigned char i2c_bus_read_reg(unsigned char addr, unsigned char reg, unsigned c
 		return I2C_PROBE_TIMEOUT;
 	}
 
+	/* For one byte, send NACK and STOP before waiting for RXNE. */
+	I2C_AcknowledgeConfig(I2C_ACK_NONE);
+	I2C_GenerateSTOP(ENABLE);
+
 	if (!i2c_wait_event(I2C_EVENT_MASTER_BYTE_RECEIVED)) {
-		I2C_GenerateSTOP(ENABLE);
 		return I2C_PROBE_TIMEOUT;
 	}
 
 	*value = I2C_ReceiveData();
-	I2C_GenerateSTOP(ENABLE);
 	return I2C_PROBE_FOUND;
 }
 
