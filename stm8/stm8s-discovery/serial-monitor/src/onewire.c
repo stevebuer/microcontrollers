@@ -11,8 +11,8 @@ static void ow_delay_us(unsigned int us)
 
 	while (us) {
 		chunk = us > 250U ? 250U : (uint8_t)us;
-		TIM4->CNTR = 0;
-		while (TIM4->CNTR < chunk) {
+		TIM2->CNTRL = 0;
+		while (TIM2->CNTRL < chunk) {
 		}
 		us -= chunk;
 	}
@@ -97,11 +97,13 @@ static void ow_print_hex_byte(unsigned char value)
 
 void onewire_init(void)
 {
-	CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER4, ENABLE);
-	TIM4->PSCR = 4;
-	TIM4->ARR = 0xFF;
-	TIM4->CNTR = 0;
-	TIM4->CR1 = TIM4_CR1_CEN;
+	CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER2, ENABLE);
+	TIM2->PSCR = 4;
+	TIM2->ARRH = 0;
+	TIM2->ARRL = 0xFF;
+	TIM2->CNTRH = 0;
+	TIM2->CNTRL = 0;
+	TIM2->CR1 = TIM2_CR1_CEN;
 
 	GPIO_Init(ONEWIRE_PORT, ONEWIRE_PIN, GPIO_MODE_OUT_OD_HIZ_FAST);
 	GPIO_ExternalPullUpConfig(ONEWIRE_PORT, ONEWIRE_PIN, ENABLE);

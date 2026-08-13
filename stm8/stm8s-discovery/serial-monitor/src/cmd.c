@@ -28,6 +28,7 @@ static void usage(void)
 	uart_puts("  b             test BMP180 chip ID\r\n");
 	uart_puts("  r <a> <r>     i2c read reg (hex bytes)\r\n");
 	uart_puts("  w <a> <r> <v> i2c write reg (hex bytes)\r\n");
+	uart_puts("  m <addr>      read byte from memory\r\n");
 	uart_puts("  e <addr> <v>  write byte to stm8 data EEPROM\r\n");
 	uart_puts("  ow ...        dallas 1-wire commands\r\n");
 }
@@ -174,6 +175,21 @@ static void exec_line(char* line)
 		else 
 			uart_puts("ERR: i2c no-ack\r\n");
 		
+		return;
+	}
+
+	if (cmd[0] == 'm' && cmd[1] == '\0') {
+
+		a1 = next_field(&args);
+
+		if (!a1 || !parse_hex(a1, &a))
+			return uart_puts("ERR: usage m <addr>\r\n");
+
+		uart_puts("  0x");
+		uart_puthex16((uint16_t)a);
+		uart_puts(": 0x");
+		uart_puthex8(FLASH_ReadByte((uint32_t)(uint16_t)a));
+		uart_puts("\r\n");
 		return;
 	}
 

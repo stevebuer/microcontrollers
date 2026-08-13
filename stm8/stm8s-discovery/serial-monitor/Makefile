@@ -30,7 +30,7 @@ BUILD_DIR   := build
 CC          := sdcc
 OBJCOPY     := packihx
 FLASH       := stm8flash
-PROGRAMMER  ?= stlinkv2
+PROGRAMMER  ?= stlink
 
 CFLAGS      := -mstm8 -D$(MCU) \
                --std-sdcc99 \

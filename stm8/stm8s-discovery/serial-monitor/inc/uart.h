@@ -7,5 +7,6 @@ void uart_puts(const char* s);
 void uart_puthex8(unsigned char value);
 unsigned char uart_rx_ready(void);
 char uart_getc(void);
+void uart_rx_isr(void);
 
 #endif

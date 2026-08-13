@@ -1,6 +1,13 @@
 #include "stm8s_conf.h"
 #include "uart.h"
 
+#define UART_RX_BUFFER_SIZE 64U
+#define UART_RX_BUFFER_MASK (UART_RX_BUFFER_SIZE - 1U)
+
+static volatile char uart_rx_buffer[UART_RX_BUFFER_SIZE];
+static volatile uint8_t uart_rx_head;
+static volatile uint8_t uart_rx_tail;
+
 void uart_init(unsigned long baud)
 {
 	CLK_PeripheralClockConfig(CLK_PERIPHERAL_UART2, ENABLE);
@@ -12,6 +19,21 @@ void uart_init(unsigned long baud)
 		UART2_PARITY_NO,
 		UART2_SYNCMODE_CLOCK_DISABLE,
 		UART2_MODE_TXRX_ENABLE);
+
+	uart_rx_head = 0;
+	uart_rx_tail = 0;
+	UART2_ITConfig(UART2_IT_RXNE_OR, ENABLE);
+}
+
+void uart_rx_isr(void)
+{
+	uint8_t next = (uart_rx_head + 1U) & UART_RX_BUFFER_MASK;
+	char received = (char)UART2_ReceiveData8();
+
+	if (next != uart_rx_tail) {
+		uart_rx_buffer[uart_rx_head] = received;
+		uart_rx_head = next;
+	}
 }
 
 void uart_putc(char c)
@@ -37,10 +59,13 @@ void uart_puthex8(unsigned char value)
 
 unsigned char uart_rx_ready(void)
 {
-	return (UART2_GetFlagStatus(UART2_FLAG_RXNE) != RESET);
+	return uart_rx_head != uart_rx_tail;
 }
 
 char uart_getc(void)
 {
-	return (char)UART2_ReceiveData8();
+	char received = uart_rx_buffer[uart_rx_tail];
+
+	uart_rx_tail = (uart_rx_tail + 1U) & UART_RX_BUFFER_MASK;
+	return received;
 }
