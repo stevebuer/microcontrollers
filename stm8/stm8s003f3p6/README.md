@@ -4,7 +4,7 @@ Several small examples in ASM and C.
 
 ## STM8S003F3P6 Minimal Development Board
 
-<img src="stm8s003f3p6.png" width="400">
+<img src="../stm8s003f3p6.png" width="400">
 
 **Board Pins**
 
