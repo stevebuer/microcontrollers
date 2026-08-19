@@ -6,6 +6,7 @@
 
 #include <msp430.h>
 #include <stdint.h>
+#include "adc.h"
 #include "uart.h"
 
 #define CMD_MAXLINE 32
@@ -23,6 +24,35 @@ static void uart_puthex16(uint16_t value)
 	uart_puthex8((unsigned char)(value & 0xFF));
 }
 
+static void uart_putdec16(int16_t value)
+{
+	char digits[6];
+	uint8_t count = 0;
+	uint16_t magnitude;
+
+	if (value < 0) {
+		uart_putc('-');
+		magnitude = (uint16_t)(-(value + 1)) + 1U;
+	} else {
+		magnitude = (uint16_t)value;
+	}
+
+	if (magnitude == 0) {
+		uart_putc('0');
+		return;
+	}
+
+	while (magnitude > 0) {
+		digits[count++] = (char)('0' + (magnitude % 10U));
+		magnitude /= 10U;
+	}
+
+	while (count > 0) {
+		count--;
+		uart_putc(digits[count]);
+	}
+}
+
 static void usage(void)
 {
 	uart_puts("micro-mon: v0.4\r\n");
@@ -31,10 +61,28 @@ static void usage(void)
 	uart_puts("  l <0|1>       set red LED\r\n");
 	uart_puts("  g <0|1>       set green LED\r\n");
 	uart_puts("  b <ms>        set blink delay\r\n");
+	uart_puts("  t             read internal temp sensor\r\n");
 	uart_puts("  i             scan i2c bus\r\n");
 	uart_puts("  x <addr>      read byte from memory\r\n");
 	uart_puts("  ow help       one-wire help\r\n");
 	uart_puts("  ow scan       read device id\r\n");
+}
+
+static void cmd_temp_read(void)
+{
+	int32_t temp_c_1000;
+	int16_t temp_whole;
+	uint16_t temp_frac;
+
+	temp_c_1000 = adc_read_temperature_milli_c();
+	temp_whole = (int16_t)(temp_c_1000 / 1000L);
+	temp_frac = (uint16_t)((temp_c_1000 < 0 ? -(temp_c_1000 % 1000L) : (temp_c_1000 % 1000L)) / 100L);
+
+	uart_puts("temp = ");
+	uart_putdec16(temp_whole);
+	uart_putc('.');
+	uart_putc((char)('0' + temp_frac));
+	uart_puts(" C\r\n");
 }
 
 static void cmd_i2cscan(void)
@@ -183,6 +231,9 @@ static void exec_line(char *line)
 		return;
 	}
 
+	if (cmd[0] == 't' && cmd[1] == '\0')
+		return cmd_temp_read();
+
 	if (cmd[0] == 'x' && cmd[1] == '\0') {
 		a1 = next_field(&args);
 		if (!a1 || !parse_hex(a1, &a))
@@ -198,8 +249,6 @@ static void exec_line(char *line)
 
 	if (cmd[0] == 'o' && cmd[1] == 'w' && cmd[2] == '\0') {
 		char *sub1 = next_field(&args);
-		char *sub2 = next_field(&args);
-		char *sub3 = next_field(&args);
 
 		if (!sub1)
 			return cmd_ow_help();
