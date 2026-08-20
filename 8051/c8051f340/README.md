@@ -8,8 +8,10 @@ This board is availble on eBay with the following features:
 
 * C8051F340-B-GQ
 * USB port
-* sdcard slot
-* 3 pushbuttons
+* SD card slot
+* 2 user LEDs: D1 (P2.2), D2 (P2.X)
+* 2 user buttons: P2.0, P2.1
+* UART: TX (P0.4), RX (P0.5)
 * DB9 serial port and level converter
 
 <img alt="C8051 Board" src="c8051f.jpg" width="400">

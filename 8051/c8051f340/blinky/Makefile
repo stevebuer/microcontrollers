@@ -16,6 +16,9 @@ OBJS     = $(patsubst $(SRC_DIR)/%.c,$(BUILD)/%.rel,$(SRCS))
 
 TARGET   = firmware
 
+# VID:PID 10c4:8044 is an EC3-type adapter, driven over libusb via port=USB (not a tty device)
+EC2_PORT = USB
+
 all: $(BUILD) $(TARGET).ihx
 
 $(BUILD):
@@ -30,6 +33,6 @@ $(TARGET).ihx: $(OBJS)
 clean:
 	rm -rf $(BUILD) *.ihx *.lk *.map *.mem *.rst *.sym
 
-flash:
-	@echo "Use Silicon Labs IDE or Simplicity Studio to flash $(TARGET).ihx"
+flash: $(TARGET).ihx
+	LD_LIBRARY_PATH=/usr/local/lib:$$LD_LIBRARY_PATH ec2writeflash --port=$(EC2_PORT) --hex --run $(TARGET).ihx
 
