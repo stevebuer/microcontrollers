@@ -15,7 +15,7 @@ Small development board with C8051F300 MCU
 * Some versions have ADC/Temp (F300/2)
 * Si C2 Debug interface
 * GPIO is 5V tolerant
-* Crossbar Pin Configuration
+* Crossbar pin configuration
 
 ## Board Description
 
@@ -23,7 +23,7 @@ Small development board with C8051F300 MCU
 * Debug Header
 * Reset Button
 * XTAL footprint
-* **No LED**
+* User LED (red) on P0.0
 
 ## Toolchain
 
@@ -36,6 +36,8 @@ SDCC includes a header for this chip.
 ### Programming
 
 Uses the Si Labs C2 Interface (2‑wire debug/programming protocol)
+
+**Notch oriented to the left on programming header**
 
 <img width="300" src="../c8051f340/c8051-debug.jpg">
 

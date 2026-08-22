@@ -4,14 +4,18 @@
 
 #include <C8051F300.h>
 
-volatile unsigned long int systick;
+#define USER_LED P0_0
 
-void t0_handler(void) __interrupt(1)
+/* disable watchdog timer */
+
+unsigned char _sdcc_external_startup(void)
 {
-	TH0 = (65536 - 125) / 256;
-	TL0 = (65536 - 125) % 256;
-	systick++;
+	PCA0MD = 0;
+
+	return 0;
 }
+
+/* simple delay */
 
 void ms_delay(unsigned int ms)
 {
@@ -21,24 +25,17 @@ void ms_delay(unsigned int ms)
 		for (j = 0; j < 123; j++);
 }
 
-int led_toggle()
-{
-	return 0;
-}
-
 int main()
 {
-	/* Port 2 Mode Output */
+	/* enable crossbar */
+	
+	XBR2 = 0x40;
 
-	/* enable interrupts */
-
-	EA = 1;
-
-	/* blink */
+	/* loop */
 
 	while (1) {
 
-		led_toggle();
+		USER_LED ^= 1;
 
 		ms_delay(1000);
 	}
