@@ -2,6 +2,18 @@
 
 <img src="at89_devboard.png" width="300">
 
+## Schematic
+
+[Partial schematic](kicad/schematic.pdf) from board pictures and multimeter checks.
+
+## Example Programs
+
+* LED Blink Pattern
+* Button Press
+* 1602 LCD
+
+## Components
+
 * ISP header on Port 1 
 * A102J 1k resistor pack on Port 0
 * A103J 10k resistor pack on Port 2
