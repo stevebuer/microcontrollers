@@ -12,7 +12,11 @@
 * Button Press
 * 1602 LCD
 
-## Components
+## I/O Devices
+
+* P2: 8 LEDs with 1K resistors to +5V
+* User Buttons (S2 - S5) on Ports P3.2 - P3.5
+* 
 
 * ISP header on Port 1 
 * A102J 1k resistor pack on Port 0
