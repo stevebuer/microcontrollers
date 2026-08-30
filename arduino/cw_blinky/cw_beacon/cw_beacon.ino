@@ -4,7 +4,9 @@
 
 #include <cww_MorseTx.h>
 
-#define CW_SPEED 10
+#define CW_SPEED 13
+
+#define CW_MESSAGE "vvv vvv vvv de n7mko n7mko n7mko"
 
 cww_MorseTx morse(LED_BUILTIN, CW_SPEED);
 
@@ -15,7 +17,7 @@ void setup()
 
 void loop() 
 {
-    Serial.println("N7MKO BEACON");
-    morse.send("vvv de n7mko n7mko n7mko");
-    delay(5000);
+    Serial.println(CW_MESSAGE);
+    morse.send(CW_MESSAGE);
+    delay(2500);
 }

@@ -20,3 +20,4 @@ stm32/f0/i2c-ll/Drivers/*
 stm32/f0/stm32f0discovery/Drivers/*
 stm32/f0/stm32f030f4/iot-sensor-monitor/Drivers/*
 stm32/f4/stm32f4discovery/Template/Drivers/*
+stm32/f4/stm32f4discovery/Template/Middlewares/*
