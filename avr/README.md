@@ -2,18 +2,33 @@
 
 Atmel (now Microchip) AVR 8-bit microcontrollers.
 
-Chips I have:
+I have a small collection of these.
 
-* [ATTiny 24/45/85](attiny/README.md)
-* [ATMEga 328](atmega328/README.md)
+## Boards
+
+* Arduino Uno
+* Arduino Nano
+* Arduino Pro Mini
+* Adafruit Trinket 3V
+* Adafruit Trinket 5V
+* Digispark
+* Attiny85 Minimal (HW-260)
+
+## Bare Chips
+
+* ATmega328P
+* ATtiny 85
 
 ## Development tools
 
 * [avr-gcc](https://gcc.gnu.org/wiki/avr-gcc)
 * [avr-libc](https://www.nongnu.org/avr-libc)
-* [MPLAB X IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
+* [Arduino CLI](https://github.com/arduino/arduino-cli)
 
 ## Programmers
 
-* [USBasp](usbasp/README.md)
-* [USBtinyISP](usbtinyisp/README.md)
+* [AVRDude](https://github.com/avrdudes/avrdude)
+
+## References
+
+* [AVR Instruction Set](https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set)

@@ -1,16 +1,10 @@
-# Arduino Sketches
+# Arduino Test Sketches
 
-Sketches for:
-
-* Arduino Uno R3
-* Arduino Pro Mini
-* Arduino Nano
-* [Adafruit Trinket](TRINKET.md)
-* [Digispark](DIGISPARK.md)
-
-## Modules
+Test programs and example code for my collection of peripheral boards.
 
 <img src="ds1307.jpg" width="200">
+
+## Peripherals
 
 * DS1307 real time clock
 * HD44780 LCD
@@ -26,14 +20,18 @@ Sketches for:
 * I2C 7-segment backpack
 * I2C/SPI mini LCD
 * PN532 NFC RFID
-* [TEA5767 FM Tuner](tea5767)
-* [SC16IS650 I2C/SPI to UART](https://www.nxp.com/docs/en/data-sheet/SC16IS740_750_760.pdf)
-* [CH375B USB Drive Reader](http://www.bitsavers.org/components/wch/_dataSheets/CH375.PDF)
+* TEA5767 FM Tuner
+* SC16IS650 I2C/SPI to UART
+* CH375B USB Drive Reader
 * 250V AC / 30V DC relay module
-* [HC-06 Bluetooth Module](https://github.com/dennistreysa/HC-06-BT)
+* HC-06 Bluetooth Module
 * Voltage Divider / Sensor
 * 16 key membrane keypad
 * ACS712 5A current sensor
 * Rotary Encoder
 * 0.96" OLED
 * LM393 reed sensor module
+
+## References
+
+* [Arduino Wire Library](https://docs.arduino.cc/language-reference/en/functions/communication/wire)
