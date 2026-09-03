@@ -25,9 +25,17 @@
 
 #define BUTTON1 P3_2
 #define BUTTON2 P3_3
+#define BUTTON4 P3_4
+
+/* pin for scope timing tests */
+
+#define CALIB_PIN P1_7
+
+/* push button state */
 
 __sbit s2;
 __sbit s3;
+__sbit s4;
 
 /* uart */
 
@@ -99,28 +107,53 @@ void ms_delay(int ms)
 	}
 }
 
+/* make various calibration measurements */
+
+void calibration(void)
+{
+	puts("cal");
+
+	CALIB_PIN = 0;
+	CALIB_PIN = 1;
+}
+
 /* main */
 
 int main(void)
 {
+	unsigned char s4_prev = 0;
+
 	uart_init();
 
 	puts("ok");
+
+	ow_init();
 
 	while (1) {
 
 		s2 = !BUTTON1;
 		s3 = !BUTTON2;
+		s4 = !BUTTON4;
+
+		/* visual alive test */
 
 		if (s2) {
 
 			P2_0 ^= 1;
-
 			puts("s2");
 		}
 
+		/* 1-wire bus scan */
+
 		if (s3)
 			ow_scanbus();
+
+		/* scope calibrate timings */
+
+		if (s4 && !s4_prev)
+			calibration();
+
+		s4_prev = s4;
 
 		ms_delay(500);
 	}

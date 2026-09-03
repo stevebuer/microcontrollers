@@ -12,11 +12,8 @@ void ow_init(void);
 
 void ow_scanbus(void);
 
-// unsigned char ow_reset();
-
-// void ow_delay_us(unsigned int); // internal?
-
 void ow_write_byte(unsigned char);
 
 unsigned char ow_read_byte(void);
 
+unsigned char ow_read_rom(uint8_t *);

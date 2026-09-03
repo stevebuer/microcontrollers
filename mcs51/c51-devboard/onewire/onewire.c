@@ -19,47 +19,59 @@
 
 void ow_init(void)
 {
-	puts("onewire bus: P1.0");
     	DQ = 1;
 }
 
-/* 11.059 Mhz crystal gives ~1.085 us delay : keep our own for now */
+/* 1 nop = ~1.085 us @ 11.0592 Mhz */
 
-/* needs to be calibrated */
+#define OW_NOP   __asm nop __endasm;
+#define OW_NOP2  OW_NOP  OW_NOP
+#define OW_NOP4  OW_NOP2 OW_NOP2
+#define OW_NOP8  OW_NOP4 OW_NOP4
+#define OW_NOP16 OW_NOP8 OW_NOP8
+#define OW_NOP32 OW_NOP16 OW_NOP16
 
-static inline void ow_delay_us(unsigned int us)
-{
-	while (us--) {
-	
-		__asm
-		nop
-		__endasm;
-	}
-}
+#define OW_DELAY_2US  do { OW_NOP2                          } while (0)
+#define OW_DELAY_4US  do { OW_NOP4                          } while (0)
+#define OW_DELAY_6US  do { OW_NOP4 OW_NOP2                  } while (0)
+#define OW_DELAY_9US  do { OW_NOP8 OW_NOP                   } while (0)
+#define OW_DELAY_50US do { OW_NOP32 OW_NOP16 OW_NOP2        } while (0)
+#define OW_DELAY_60US do { OW_NOP32 OW_NOP16 OW_NOP8 OW_NOP4} while (0)
+#define OW_DELAY_64US do { OW_NOP32 OW_NOP32                } while (0)
 
-/* reset pulse + presence detect: 1 if presence pulse, 0 of not */
+/* presence delays */
+
+#define OW_RESET_LOOPS   70   /* bus low ~480-960us, target ~600us */
+#define OW_WAIT_LOOPS     5   /* wait before sampling presence, ~15-60us */
+#define OW_FINISH_LOOPS  47   /* finish out the reset/presence slot, ~400us */
 
 static unsigned char ow_reset(void)
 {
 	unsigned char presence;
+	unsigned int i;
 
 	/* hold bus low for reset pulse (480-960us) */
 
 	DQ = 0;
-	ow_delay_us(480);
+
+	for (i = 0; i < OW_RESET_LOOPS; i++)
+		__asm__("nop");
+
 	DQ = 1;
 
 	/* wait for device to pull low (presence pulse starts within 15-60us) */
 
-	ow_delay_us(60);
-	
+	for (i = 0; i < OW_WAIT_LOOPS; i++)
+		__asm__("nop");
+
 	/* sample presence: low = device present, high = no device */
 
 	presence = DQ;
 
 	/* finish the 480us+ reset/presence slot */
 
-	ow_delay_us(420);
+	for (i = 0; i < OW_FINISH_LOOPS; i++)
+		__asm__("nop");
 
 	return (presence == 0) ? 1 : 0;
 }
@@ -76,17 +88,17 @@ void ow_write_bit(unsigned char bit)
 
 		/* send 1: short low, long high */
 
-		ow_delay_us(6);
+		OW_DELAY_6US;
 		DQ = 1;
-		ow_delay_us(64);
+		OW_DELAY_64US;
 
 	} else {
 
 		/* send 0: hold full slot low wth 4us recovery */
 
-		ow_delay_us(60);
+		OW_DELAY_60US;
 		DQ = 1;
-		ow_delay_us(4);
+		OW_DELAY_4US;
 	}
 }
 
@@ -99,12 +111,12 @@ unsigned char ow_read_bit(void)
 	/* start slot */
 
 	DQ = 0;
-	ow_delay_us(2);
+	OW_DELAY_2US;
 	DQ = 1;
 	
 	/* wait before sample point (~13-15us from slot start) */
 
-	ow_delay_us(9);             
+	OW_DELAY_9US;
 
 	/* read sample */
 
@@ -112,7 +124,7 @@ unsigned char ow_read_bit(void)
 	
 	/* wait for slot end (~60us total) */
 
-	ow_delay_us(50);            
+	OW_DELAY_50US;
 
 	return bit;
 }
@@ -147,16 +159,16 @@ unsigned char ow_read_byte(void)
 	return data;
 }
 
-/* read 64-bit ROM id */
+/* read 64-bit ROM id: returns 1 on success, 0 if no device present */
 
-void ow_read_rom(uint8_t *rom)
+unsigned char ow_read_rom(uint8_t *rom)
 {
 	uint8_t i;
 
 	/* no device present */
 
 	if (!ow_reset())
-		return;  
+		return 0;
 
 	/* Read ROM */
 
@@ -164,6 +176,8 @@ void ow_read_rom(uint8_t *rom)
 
 	for (i = 0; i < 8; i++)
 		rom[i] = ow_read_byte();
+
+	return 1;
 }
 
 /* our bus only has a single device for now */
@@ -172,7 +186,11 @@ void ow_scanbus(void)
 {
 	uint8_t i, rom[8];
 
-	ow_read_rom(rom);
+	if (!ow_read_rom(rom)) {
+
+		puts("no presence pulse detected");
+		return;
+	}
 
 	for (i = 0; i < 8; i++) {
 
