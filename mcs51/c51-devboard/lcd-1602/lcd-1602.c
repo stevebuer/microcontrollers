@@ -1,7 +1,7 @@
 /*
  * C51 Development Board 1602 LCD
  *
- * Pattern on 8 Port 2 LEDs
+ * Print a 2-line message and toggle LED via button S2
  *
  */
 
@@ -10,6 +10,8 @@
 /* Button to read */
 
 #define BUTTON P3_2
+
+__sbit s2;
 
 /* LCD control line pins */
 
@@ -28,8 +30,14 @@
 #define LCD_CMD_ENTRY 0x06
 #define LCD_CMD_DISP_OFF 0x08
 #define LCD_CMD_DISP_ON 0x0C
-#define LCD_CMD_DISP_MODE 0x38
+#define LCD_CMD_8BIT_1LINE 0x30
+#define LCD_CMD_8BIT_2LINES 0x38
 #define LCD_CMD_SET_POS 0x80
+
+/* DDRAM start address for rows (2-row mode) */
+
+#define LCD_ROW1_ADDR 0x00
+#define LCD_ROW2_ADDR 0x40
 
 /* Timer constants */
 
@@ -70,15 +78,13 @@ void lcd_write_command(unsigned char byte)
 	RW = 0;
 	EN = 1;
 
-	__asm__("nop");	
+	__asm__("nop");
 
 	EN = 0;
 	P2 = 0xFF;
 	
-	__asm__("nop");	
+	ms_delay(1);
 }
-
-/* make as one function */
 
 void lcd_write_char(unsigned char c)
 {	
@@ -88,44 +94,48 @@ void lcd_write_char(unsigned char c)
 	RW = 0;
 	EN = 1;
 
-	__asm__("nop");	
+	__asm__("nop");
 
 	EN = 0;
 	P2 = 0xFF;
-	
-	__asm__("nop");	
+
+	ms_delay(2);
 }
 
 void lcd_clear(void)
 {
 	lcd_write_command(LCD_CMD_CLEAR);
 	
-	ms_delay(5);
-
 	lcd_write_command(LCD_CMD_ENTRY);
 	
-	ms_delay(5);
-  
 	lcd_write_command(LCD_CMD_SET_POS);
-	
-	ms_delay(5);
 }
 
 void lcd_init(void)
 {
-	ms_delay(25);
+	/* power-on wait */
 
-	/* 8-bit 2-line mode */
+	ms_delay(50);
 
-	lcd_write_command(LCD_CMD_DISP_MODE);
-	
+	/* HD44780 "initialization by instruction" (no busy-flag check yet) */
+
+	lcd_write_command(LCD_CMD_8BIT_1LINE);
+
 	ms_delay(5);
 
+	lcd_write_command(LCD_CMD_8BIT_1LINE);
+
+	lcd_write_command(LCD_CMD_8BIT_1LINE);
+
+	/* 8-bit 2-line mode - must follow the sequence above to latch reliably */
+
+	lcd_write_command(LCD_CMD_8BIT_2LINES);
+	
 	lcd_write_command(LCD_CMD_DISP_OFF);
 	
-	ms_delay(5);
-
 	lcd_clear();
+
+	lcd_write_command(LCD_CMD_DISP_ON);
 }
 
 void lcd_puts(char *s)
@@ -137,13 +147,26 @@ void lcd_puts(char *s)
 	}
 }
 
+void lcd_position(unsigned char row, unsigned char column)
+{
+	unsigned char addr;
+
+	addr = (row == 1) ? LCD_ROW1_ADDR : LCD_ROW2_ADDR;
+
+	addr += column - 1;
+
+	lcd_write_command(LCD_CMD_SET_POS | addr);
+}
+
 int main()
 {
-	__sbit s2;
-
 	lcd_init();
 
 	lcd_puts("Hello World!");
+
+	lcd_position(2, 1);
+	
+	lcd_write_char('X'); lcd_write_char('Y'); lcd_write_char('Z');	
 
 	while (1) {
 

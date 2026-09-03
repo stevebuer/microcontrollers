@@ -5,3 +5,6 @@ all:
 
 clean:
 	rm -f *.hex *.lk *.map *.mem *.rst *.sym *.cdb *.omf *.lst *.rel *.asm
+
+flash:
+	stcgal -P stc89 -p /dev/ttyUSB0 -b 9600 $(PROJECT).hex
