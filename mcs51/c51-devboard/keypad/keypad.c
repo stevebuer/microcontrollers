@@ -1,18 +1,28 @@
 /*
  * MCS51 Keypad Scanner
+ *
+ * Port 0 with 10k pull-ups
  */
 
 #include <mcs51/8051.h>
+#include <stdio.h>
 
-#define R1 P1_0
-#define R2 P1_1
-#define R3 P1_2
-#define R4 P1_3
-#define C1 P1_4
-#define C2 P1_5
-#define C3 P1_6
+/* keypad ribbon cable */
 
+#define C1 P0_2
+#define C2 P0_1
+#define C3 P0_0
+#define R1 P0_6
+#define R2 P0_5
+#define R3 P0_4
+#define R4 P0_3
+
+/* onboard led + button */
+
+#define BUTTON1 P3_2
 #define LED P2_0
+
+__sbit s2;
 
 unsigned char keymap[4][3] = {
 
@@ -98,6 +108,19 @@ void uart_init(void)
 
 int putchar(int c)
 {
+	/* add cr */
+
+	if (c == '\n') {
+		
+		while (!TI);
+
+		TI = 0;
+
+		SBUF = '\r';
+	}
+
+	/* send c */
+
         while (!TI);
 
         TI = 0;
@@ -113,20 +136,29 @@ void main(void)
 
 	uart_init();
 
+	puts("ok");
+
 	P1 = 0xFF;
 
 	while (1) {
+
+		/* board push buttons */
+
+		s2 = !BUTTON1;
+
+		if (s2)
+			LED ^= 1;
+
+		delay_ms(250);
+
+		/* keypad */
 
 		key = scan_keypad();
 
 		if (key != 0xFF) {
 
-			LED = 0;
-
 			delay_ms(250);
 
-			LED = 1;
-			
 			putchar(key);
 		}
     	}
