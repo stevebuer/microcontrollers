@@ -11,19 +11,22 @@
 
 /* test values */
 
-int16_t raw_temp = 0x017D; // from my sensor
-// int16_t raw_temp = 0xFC90; // -55 C
+// int16_t raw_temp = 0x017D; // reading from my sensor
+// int16_t raw_temp = 0x0191; // +25.0625 C
+// int16_t raw_temp = 0x07D0; // +125 C
+// int16_t raw_temp = 0xFFF8; // -0.5 C
+int16_t raw_temp = 0xFF5F; // -10.0625
+//int16_t raw_temp = 0xFC90; // -55 C
 
-// todo: fix negative
 
 /* conversion example */
 
 int main(int argc, char **argv)
 {
-	int frac = 0, whole = 0, sign = 0;
+	int8_t whole = 0, frac = 0, sign = 0;
 	float f_frac = 0.0, f_multiplier = 0.0, f_celsius = 0.0;
 
-	printf("  raw: %04X\n", raw_temp);
+	printf("  raw: %4X\n", raw_temp & 0xFFFF);
 
 	/* sign */
 
@@ -33,9 +36,9 @@ int main(int argc, char **argv)
 
 	/* integer */
 
-	whole = (raw_temp >> 4) & 0b111111;
+	whole = (raw_temp >> 4) & 0b11111111;
 
-	printf("whole: 0x%2X -> %2d\n", whole, whole);
+	printf("whole: 0x%2X -> %2d\n", whole & 0xFFFF, whole);
 
 	/* fractional part */
 
