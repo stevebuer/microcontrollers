@@ -11,10 +11,6 @@
 #include <stdio.h>
 #include "onewire.h"
 
-/* 1-wire command bytes */
-
-#define CMD_READ_ROM 0x33
-
 /* todo: choose pin on init */
 
 void ow_init(void)
@@ -45,7 +41,7 @@ void ow_init(void)
 #define OW_WAIT_LOOPS     5   /* wait before sampling presence, ~15-60us */
 #define OW_FINISH_LOOPS  47   /* finish out the reset/presence slot, ~400us */
 
-static unsigned char ow_reset(void)
+__sbit ow_reset(void)
 {
 	unsigned char presence;
 	unsigned int i;
@@ -172,7 +168,7 @@ unsigned char ow_read_rom(uint8_t *rom)
 
 	/* Read ROM */
 
-	ow_write_byte(CMD_READ_ROM);  
+	ow_write_byte(ONEWIRE_READ_ROM);  
 
 	for (i = 0; i < 8; i++)
 		rom[i] = ow_read_byte();

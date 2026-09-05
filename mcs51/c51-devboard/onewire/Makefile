@@ -1,7 +1,7 @@
 PROJECT = onewire
 BUILD_DIR = build
 
-SRC = main.c onewire.c
+SRC = main.c onewire.c ds18b20.c
 REL = $(addprefix $(BUILD_DIR)/,$(SRC:.c=.rel))
 
 CC = sdcc

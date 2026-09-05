@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "onewire.h"
+#include "ds18b20.h"
 
 /* millis timer constants */
 
@@ -25,17 +26,20 @@
 
 #define BUTTON1 P3_2
 #define BUTTON2 P3_3
-#define BUTTON4 P3_4
+#define BUTTON3 P3_4
+#define BUTTON4 P3_5
 
 /* pin for scope timing tests */
 
-#define CALIB_PIN P1_7
+#define CALIBRATION_PIN P1_7
 
 /* push button state */
 
 __sbit s2;
 __sbit s3;
 __sbit s4;
+__sbit s5;
+__sbit s5_prev = 0;
 
 /* uart */
 
@@ -82,7 +86,7 @@ int putchar(int c)
 
 /* millis */
 
-void ms_delay(int ms)
+void delay_ms(int ms)
 {
 	unsigned int i;
 
@@ -113,15 +117,23 @@ void calibration(void)
 {
 	puts("cal");
 
-	CALIB_PIN = 0;
-	CALIB_PIN = 1;
+	CALIBRATION_PIN = 0;
+	CALIBRATION_PIN = 1;
+}
+
+/* format base-16 */
+
+void hex_digit(unsigned char c)
+{
+	putchar("0123456789ABCDEF"[c >> 4]);
+        putchar("0123456789ABCDEF"[c & 0x0F]);
 }
 
 /* main */
 
 int main(void)
 {
-	unsigned char s4_prev = 0;
+	uint16_t raw_temp;
 
 	uart_init();
 
@@ -133,7 +145,8 @@ int main(void)
 
 		s2 = !BUTTON1;
 		s3 = !BUTTON2;
-		s4 = !BUTTON4;
+		s4 = !BUTTON3;
+		s5 = !BUTTON4;
 
 		/* visual alive test */
 
@@ -148,13 +161,27 @@ int main(void)
 		if (s3)
 			ow_scanbus();
 
+		/* temperature convert */
+
+		if (s4) {
+
+			raw_temp = ds18b20_read_raw();
+
+			hex_digit((raw_temp >> 8) & 0xFF);
+			hex_digit(raw_temp & 0xFF);
+
+			putchar('\n');
+		}
+
 		/* scope calibrate timings */
 
-		if (s4 && !s4_prev)
+		if (s5 && !s5_prev)
 			calibration();
 
-		s4_prev = s4;
+		s5_prev = s5;
 
-		ms_delay(500);
+		/* loop interval */
+
+		delay_ms(500);
 	}
 }
