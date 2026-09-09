@@ -114,9 +114,11 @@ void main(void)
 
 	while (1) {
 
-		softserial_send_string("TELEMETRY,123,45.6\r\n");
+		// softserial_send_string("TELEMETRY,123,45.6\r\n");
+		
+		softserial_send_string("TEST");
 	
-		delay_ms(1000);
+		delay_ms(10000);
 	}
 
 }

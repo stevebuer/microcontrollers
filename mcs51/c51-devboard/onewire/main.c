@@ -41,6 +41,11 @@ __sbit s4;
 __sbit s5;
 __sbit s5_prev = 0;
 
+/* systick 1 ms */
+
+int systick = 0;
+__sbit tock;
+
 /* uart */
 
 void uart_init(void)
@@ -183,5 +188,19 @@ int main(void)
 		/* loop interval */
 
 		delay_ms(500);
+
+		tock ^= 1;
+
+		if (tock)
+			systick++;
+
+		/* report interval 1 min */
+
+		if (systick > 60000) {
+
+			read_sensor();
+			telemetry();
+			systick = 0;
+		}
 	}
 }
